@@ -3,7 +3,7 @@ using System;
 
 namespace ThreeDLib
 {
-    public partial class player : CharacterBody3D
+    public partial class PlayerCharacterBody3D : CharacterBody3D
     {
         [ExportCategory("External nodes")]
         [Export]

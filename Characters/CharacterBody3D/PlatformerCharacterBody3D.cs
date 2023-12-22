@@ -3,7 +3,7 @@ using System;
 
 namespace ThreeDLib
 {
-    public partial class platformerPlayer : player
+    public partial class PlatformerCharacterBody3D : PlayerCharacterBody3D
     {
         public const float Speed = 5.0f;
         public const float JumpVelocity = 4.5f;
