@@ -57,10 +57,10 @@ namespace ThreeDLib
             }
             else if (currentState != State.InAir)
             {
-                jumpDirection = Vector3.Zero;
+                jumpDirection = Vector3.Inf;
             }
 
-            if (jumpDirection != Vector3.Zero)
+            if (jumpDirection != Vector3.Inf)
             {
                 velocity.X = jumpDirection.X * Speed * 0.5f;
                 velocity.Z = jumpDirection.Z * Speed * 0.5f;
