@@ -48,9 +48,9 @@ namespace ThreeDLib
             {
                 velocity.Y = JumpVelocity;
                 doubleJumpAvailable = false;
+                jumpDirection = direction;
             }
-
-            if (Input.IsActionJustPressed("move_jump") && currentState != State.InAir)
+            else if (Input.IsActionJustPressed("move_jump") && currentState != State.InAir)
             {
                 velocity.Y = JumpVelocity;
                 jumpDirection = direction;
@@ -62,11 +62,15 @@ namespace ThreeDLib
 
             if (jumpDirection != Vector3.Zero)
             {
-                GD.Print(jumpDirection);
                 velocity.X = jumpDirection.X * Speed * 0.5f;
                 velocity.Z = jumpDirection.Z * Speed * 0.5f;
-                velocity.X += direction.X * (Speed * 0.5f);
-                velocity.Z += direction.Z * (Speed * 0.5f);
+
+                Vector3 inAirMovement = jumpDirection;
+                inAirMovement.X = direction.X * (Speed * 0.5f);
+                inAirMovement.Z = direction.Z * (Speed * 0.5f);
+
+                velocity.X += inAirMovement.X;
+                velocity.Z += inAirMovement.Z;
             }
             else if (direction != Vector3.Zero)
             {
