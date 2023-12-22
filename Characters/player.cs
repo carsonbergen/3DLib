@@ -5,6 +5,19 @@ namespace ThreeDLib
 {
     public partial class player : CharacterBody3D
     {
+        [ExportCategory("External nodes")]
+        [Export]
+        public Node3D camera;
+
+        public override void _Ready()
+        {
+            if (camera == null)
+            {
+                GD.PrintErr("Camera can't be null");
+                GetTree().Quit();
+            }
+        }
+
         /**
             Gets the current state of the player object based on physical state.
         */

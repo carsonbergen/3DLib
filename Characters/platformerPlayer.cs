@@ -41,6 +41,14 @@ namespace ThreeDLib
             }
 
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
+            /**
+                TODO:
+                    Add lock on, and turning off lock on
+            */
+            if (inputDir != Vector2.Zero)
+            {
+                RotationDegrees = RotationDegrees with {Y = camera.RotationDegrees.Y};
+            }
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
             // Double jump
@@ -60,19 +68,7 @@ namespace ThreeDLib
                 jumpDirection = Vector3.Inf;
             }
 
-            if (jumpDirection != Vector3.Inf)
-            {
-                velocity.X = jumpDirection.X * Speed * 0.5f;
-                velocity.Z = jumpDirection.Z * Speed * 0.5f;
-
-                Vector3 inAirMovement = jumpDirection;
-                inAirMovement.X = direction.X * (Speed * 0.5f);
-                inAirMovement.Z = direction.Z * (Speed * 0.5f);
-
-                velocity.X += inAirMovement.X;
-                velocity.Z += inAirMovement.Z;
-            }
-            else if (direction != Vector3.Zero)
+            if (direction != Vector3.Zero)
             {
                 velocity.X = direction.X * Speed;
                 velocity.Z = direction.Z * Speed;
@@ -82,7 +78,6 @@ namespace ThreeDLib
                 velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
                 velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
             }
-
 
             return velocity;
         }
