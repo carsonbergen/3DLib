@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmtxra6am5eiu"]
+
+[ext_resource type="Script" path="res://Libs/3DLib/Cameras/orbit_camera.cs" id="1_oryox"]
+
+[node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_oryox")
+camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.936323, 0.351139, 0, -0.351139, 0.936323, 0, 1.1766, 2.28033)
+current = true
