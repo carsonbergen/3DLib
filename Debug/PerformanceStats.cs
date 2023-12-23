@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Threading;
+using MathThreeDLib;
 
 public partial class PerformanceStats : RichTextLabel
 {
@@ -76,7 +77,7 @@ public partial class PerformanceStats : RichTextLabel
 
 				information += formatTitle("GAME INFORMATION:");
 
-				var vid_mem = formatProperty("Video Memory Usage", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed).ToString(), "Video memory used. Lower is better.");
+				var vid_mem = formatProperty("Video Memory Usage", MathTDL.BtoMB(Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed)).ToString() + " MB", "Video memory used. Lower is better.");
 				information += vid_mem;
 
 				Thread.Sleep(10);
@@ -86,6 +87,7 @@ public partial class PerformanceStats : RichTextLabel
 					updateFromStatThread = information;
 				}
 
+				// Allow other threads to continue
 				childThreadSignal.Set();
 			}
 		}

@@ -5,7 +5,8 @@
 
 [node name="StatisiticsWindow" type="Window"]
 title = "Debug information"
-position = Vector2i(0, 36)
+position = Vector2i(50, 50)
+size = Vector2i(300, 400)
 transparent = true
 theme = ExtResource("1_6nivm")
 
