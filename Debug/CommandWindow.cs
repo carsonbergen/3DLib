@@ -49,7 +49,7 @@ public partial class CommandWindow : Window
 				if (Input.IsActionJustPressed("ui_accept"))
 				{
 					command = commandInput.Text;
-					commandDisplay.Text += "[color=yellow]$ [/color]	" + command + "\n";
+					PushToDisplay("[color=yellow]$ [/color]	" + command);
 					commandInput.Clear();
 					EmitSignal(SignalName.CommandEnteredSignal, command);
 				}
@@ -57,8 +57,18 @@ public partial class CommandWindow : Window
 		}
     }
 
+	public void PushToDisplay(string text)
+	{
+		commandDisplay.Text += text + "\n";
+	}
+
 	private void OnCommandNotRecognized() 
 	{
-		commandDisplay.Text += "[color=red]Command not recognized.[/color]";
+		commandDisplay.Text += "[color=red]Command not recognized.[/color]\n";
+	}
+
+	private void OnCommandResponse(string response) 
+	{
+		PushToDisplay(response);
 	}
 }
