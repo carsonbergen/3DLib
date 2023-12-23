@@ -9,7 +9,10 @@ public partial class CommandWindow : Window
 	[Export]
 	public RichTextLabel commandDisplay;
 
-	// Signal stuff
+	/** 
+		Command entered signal
+			Sent to CommandHandler
+	*/
 	[Signal]
 	public delegate void CommandEnteredSignalEventHandler(string command);
 	private string command;
@@ -46,6 +49,9 @@ public partial class CommandWindow : Window
         switch (@event)
 		{
 			case InputEventKey:
+				/**
+					Command entered
+				*/
 				if (Input.IsActionJustPressed("ui_accept"))
 				{
 					command = commandInput.Text;
@@ -57,16 +63,33 @@ public partial class CommandWindow : Window
 		}
     }
 
+	/**
+		Pushes normal text to the display
+	*/
 	public void PushToDisplay(string text)
 	{
 		commandDisplay.Text += text + "\n";
 	}
 
-	private void OnCommandNotRecognized() 
+	/**
+		Pushes error text to the display
+	*/
+	public void PushErrorToDisplay(string text)
 	{
-		commandDisplay.Text += "[color=red]Command not recognized.[/color]\n";
+		commandDisplay.Text += "[color=red]" + text + "[/color]\n";
 	}
 
+	/**
+		Handles CommandNotRecognized from the CommandHandler class
+	*/
+	private void OnCommandNotRecognized() 
+	{
+		PushErrorToDisplay("Command not recognized");
+	}
+
+	/**
+		Handles CommandResponse from the CommandHandler class
+	*/
 	private void OnCommandResponse(string response) 
 	{
 		PushToDisplay(response);
