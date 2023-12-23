@@ -77,10 +77,19 @@ public partial class PerformanceStats : RichTextLabel
 
 				information += formatTitle("GAME INFORMATION:");
 
-				var vid_mem = formatProperty("Video Memory Usage", MathTDL.BtoMB(Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed)).ToString() + " MB", "Video memory used. Lower is better.");
-				information += vid_mem;
+				var vidMem = formatProperty("Video Memory Usage", MathTDL.BtoMB(Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed)).ToString() + " MB", "Video memory used. Lower is better.");
+				information += vidMem;
 
-				Thread.Sleep(10);
+				var processTime = formatProperty("Process", Performance.GetMonitor(Performance.Monitor.TimeProcess).ToString() + " ms", "");
+				information += processTime;
+
+				var physicsProcessTime = formatProperty("Process", Performance.GetMonitor(Performance.Monitor.TimePhysicsProcess).ToString() + " ms", "");
+				information += physicsProcessTime;
+
+				var navigationProcessTime = formatProperty("Process", Performance.GetMonitor(Performance.Monitor.TimeNavigationProcess).ToString() + " ms", "");
+				information += navigationProcessTime;
+
+				Thread.Sleep(1);
 
 				lock (lockObject)
 				{
