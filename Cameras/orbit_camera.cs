@@ -13,7 +13,7 @@ public partial class orbit_camera : Node3D
 	[Export]
 	public float movementSpeed = 15f;
 	[Export]
-	public float cameraSensitivity = 16f / 1000f;
+	public float cameraSensitivity = 10f / 1000f;
 	[Export]
 	public float cameraAccelerationSpeed = 0.5f;
 	[Export]
@@ -65,12 +65,12 @@ public partial class orbit_camera : Node3D
 		if (look > 0)
 		{
 			time += delta;
-			RotateY(Mathf.DegToRad(internalCameraSensitivity));
+			RotateY(Mathf.DegToRad(-internalCameraSensitivity));
 		}
 		else if (look < 0)
 		{
 			time += delta;
-			RotateY(Mathf.DegToRad(-internalCameraSensitivity));
+			RotateY(Mathf.DegToRad(internalCameraSensitivity));
 		}
 		else
 		{
