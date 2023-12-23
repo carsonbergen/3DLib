@@ -22,6 +22,8 @@ public partial class orbit_camera : Node3D
 	public float baseCameraUpdateSpeed = 0.5f;
 	[Export]
 	public float fastCameraUpdateSpeed = 0.75f;
+	[Export]
+	public bool inverted = false;
 
 	private double time = 0;
 
@@ -62,15 +64,22 @@ public partial class orbit_camera : Node3D
 		var look = Input.GetAxis("camera_rotate_left", "camera_rotate_right");
 		if (time > cameraAccelerationSpeed)
 			internalCameraSensitivity = cameraSensitivity + (cameraAccelerationAmount / 100f);
+		
 		if (look > 0)
 		{
 			time += delta;
-			RotateY(Mathf.DegToRad(-internalCameraSensitivity));
+			if (inverted)
+				RotateY(Mathf.DegToRad(internalCameraSensitivity));
+			else
+				RotateY(Mathf.DegToRad(-internalCameraSensitivity));
 		}
 		else if (look < 0)
 		{
 			time += delta;
-			RotateY(Mathf.DegToRad(internalCameraSensitivity));
+			if (inverted)
+				RotateY(Mathf.DegToRad(-internalCameraSensitivity));
+			else
+				RotateY(Mathf.DegToRad(internalCameraSensitivity));
 		}
 		else
 		{
