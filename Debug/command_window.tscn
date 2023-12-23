@@ -35,7 +35,6 @@ size_flags_vertical = 3
 theme = ExtResource("1_xo1vy")
 theme_type_variation = &"CommandDisplay"
 bbcode_enabled = true
-fit_content = true
 
 [node name="CommandInput" type="LineEdit" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
