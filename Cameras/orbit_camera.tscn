@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://dmtxra6am5eiu"]
 
-[ext_resource type="Script" path="res://Libs/3DLib/Cameras/orbit_camera.cs" id="1_oryox"]
+[ext_resource type="Script" path="res://Libs/3DLib/Cameras/OrbitCamera.cs" id="1_2q6vh"]
 
 [node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera")]
-script = ExtResource("1_oryox")
+script = ExtResource("1_2q6vh")
 camera = NodePath("Camera3D")
 
 [node name="Camera3D" type="Camera3D" parent="."]

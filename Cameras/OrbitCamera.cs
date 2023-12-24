@@ -58,9 +58,10 @@ public partial class OrbitCamera : Node3D
 		}
 	}
 
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
-		GlobalPosition = GlobalPosition.Lerp(target.Position, (float)delta * movementSpeed);
+		GlobalPosition = GlobalPosition.Lerp(target.GlobalPosition, (float) delta * movementSpeed);
+
 		var look = Input.GetAxis("camera_rotate_left", "camera_rotate_right");
 		if (time > cameraAccelerationSpeed)
 			internalCameraSensitivity = cameraSensitivity + (cameraAccelerationAmount / 100f);
