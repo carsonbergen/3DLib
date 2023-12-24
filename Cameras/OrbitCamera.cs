@@ -2,7 +2,7 @@ using Godot;
 using System;
 using ThreeDLib;
 
-public partial class orbit_camera : Node3D
+public partial class OrbitCamera : Node3D
 {
 	[ExportCategory("External nodes")]
 	[Export]
