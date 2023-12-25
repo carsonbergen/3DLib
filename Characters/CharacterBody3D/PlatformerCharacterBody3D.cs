@@ -46,7 +46,7 @@ namespace ThreeDLib
                 TODO:
                     Add lock on, and turning off lock on
             */
-            if (inputDir != Vector2.Zero)
+            if (inputDir != Vector2.Zero && currentState != State.InAir)
             {
                 RotationDegrees = RotationDegrees with {Y = camera.RotationDegrees.Y};
             }
