@@ -2,10 +2,15 @@
 
 [ext_resource type="Script" path="res://Libs/3DLib/Cameras/OrbitCamera.cs" id="1_2q6vh"]
 
-[node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera")]
+[node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera", "pivot")]
 script = ExtResource("1_2q6vh")
-camera = NodePath("Camera3D")
+camera = NodePath("Pivot/Camera3D")
+pivot = NodePath("Pivot")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.936323, 0.351139, 0, -0.351139, 0.936323, 0, 1.1766, 2.28033)
+[node name="Pivot" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+spring_length = 2.5
+margin = 0.5
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
 current = true

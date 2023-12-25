@@ -5,17 +5,18 @@ namespace ThreeDLib
 {
     public partial class PlatformerCharacterBody3D : PlayerCharacterBody3D
     {
+        [ExportCategory("Physics")]
+        [Export]
         public const float Speed = 5.0f;
+        [Export]
         public const float JumpVelocity = 4.5f;
-
+        [Export]
         public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+        // Platformer logic related variables
         private bool doubleJumpAvailable = true;
-
         private State currentState;
-
         private float movementFactor = 1f;
-
         private Vector3 jumpDirection;
 
         public override void _PhysicsProcess(double delta)

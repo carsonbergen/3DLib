@@ -7,13 +7,16 @@ public partial class OrbitCamera : Node3D
 	[ExportCategory("External nodes")]
 	[Export]
 	public Node3D target;
-	[ExportCategory("Camera properties")]
+	[ExportCategory("Internal nodes")]
 	[Export]
 	public Camera3D camera;
 	[Export]
+	public SpringArm3D pivot;
+	[ExportCategory("Camera properties")]
+	[Export]
 	public float movementSpeed = 15f;
 	[Export]
-	public float cameraSensitivity = 10f / 1000f;
+	public float cameraSensitivity = 200f / 1000f;
 	[Export]
 	public float cameraAccelerationSpeed = 0.5f;
 	[Export]
@@ -24,6 +27,13 @@ public partial class OrbitCamera : Node3D
 	public float fastCameraUpdateSpeed = 0.75f;
 	[Export]
 	public bool inverted = false;
+	[ExportCategory("Pivot arm properties")]
+	[Export]
+	public float minDistance = 0.5f;
+	[Export]
+	public float minXRotation = -65f;
+	[Export]
+	public float maxXRotation = 45f;
 
 	private double time = 0;
 
@@ -41,13 +51,7 @@ public partial class OrbitCamera : Node3D
 		internalCameraSensitivity = cameraSensitivity;
 		maxInternalCameraSensitivity = cameraSensitivity + cameraAccelerationAmount;
 
-		var childCamera = GetNode<Camera3D>("Camera3D");
-		if (childCamera != null || camera != null)
-		{
-			camera = childCamera;
-			camera.Current = true;
-		}
-		else
+		if (camera == null)
 		{
 			handleError("Orbit camera requires camera node");
 		}
@@ -56,6 +60,8 @@ public partial class OrbitCamera : Node3D
 		{
 			handleError("Target node cannot be null");
 		}
+
+		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -90,7 +96,23 @@ public partial class OrbitCamera : Node3D
 		Mathf.Clamp(internalCameraSensitivity, cameraSensitivity, maxInternalCameraSensitivity);
 	}
 
-	private void handleError(string message)
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseMotion)
+		{
+			InputEventMouseMotion mouseEvent = (InputEventMouseMotion) @event;
+			if (Input.MouseMode == Input.MouseModeEnum.Captured)
+			{
+				RotateY((float) -mouseEvent.Relative.X * cameraSensitivity * 0.001f);
+				pivot.RotateX((float) -mouseEvent.Relative.Y * cameraSensitivity * 0.001f);
+				pivot.RotationDegrees = pivot.RotationDegrees with {
+					X = Mathf.Clamp(pivot.RotationDegrees.X, minXRotation, maxXRotation)
+				};
+			}
+		}
+    }
+
+    private void handleError(string message)
 	{
 		GD.PrintErr(message);
 		GetTree().Quit();
