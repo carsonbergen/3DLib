@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Resources;
 using ThreeDLib;
 
 public partial class OrbitCamera : Node3D
@@ -109,6 +110,21 @@ public partial class OrbitCamera : Node3D
 					X = Mathf.Clamp(pivot.RotationDegrees.X, minXRotation, maxXRotation)
 				};
 			}
+		}
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey)
+		{
+			InputEventKey e = (InputEventKey) @event;
+			if (e.IsActionPressed("open_command_terminal"))
+			{
+				if (Input.MouseMode != Input.MouseModeEnum.Captured)
+					Input.MouseMode = Input.MouseModeEnum.Captured;
+				else
+                    Input.MouseMode = Input.MouseModeEnum.Visible;
+            }
 		}
     }
 
