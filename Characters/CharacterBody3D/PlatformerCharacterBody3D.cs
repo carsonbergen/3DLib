@@ -7,9 +7,9 @@ namespace ThreeDLib
     {
         [ExportCategory("Physics")]
         [Export]
-        public const float Speed = 5.0f;
+        public const float speed = 5.0f;
         [Export]
-        public const float JumpVelocity = 4.5f;
+        public const float jumpVelocity = 4.5f;
         [Export]
         public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -48,20 +48,23 @@ namespace ThreeDLib
             */
             if (inputDir != Vector2.Zero && currentState != State.InAir)
             {
-                RotationDegrees = RotationDegrees with {Y = camera.RotationDegrees.Y};
+                GlobalRotationDegrees = GlobalRotationDegrees with {Y = camera.GlobalRotationDegrees.Y};
+                model.GlobalRotationDegrees = model.GlobalRotationDegrees with {
+                    Y = (float) Mathf.Lerp(model.GlobalRotationDegrees.Y, camera.GlobalRotationDegrees.Y, delta * 10)
+                };
             }
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
             // Double jump
             if (Input.IsActionJustPressed("move_jump") && currentState == State.InAir && doubleJumpAvailable)
             {
-                velocity.Y = JumpVelocity;
+                velocity.Y = jumpVelocity;
                 doubleJumpAvailable = false;
                 jumpDirection = direction;
             }
             else if (Input.IsActionJustPressed("move_jump") && currentState != State.InAir)
             {
-                velocity.Y = JumpVelocity;
+                velocity.Y = jumpVelocity;
                 jumpDirection = direction;
             }
             else if (currentState != State.InAir)
@@ -71,13 +74,13 @@ namespace ThreeDLib
 
             if (direction != Vector3.Zero)
             {
-                velocity.X = direction.X * Speed;
-                velocity.Z = direction.Z * Speed;
+                velocity.X = direction.X * speed;
+                velocity.Z = direction.Z * speed;
             }
             else
             {
-                velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+                velocity.X = Mathf.MoveToward(Velocity.X, 0, speed);
+                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, speed);
             }
 
             return velocity;

@@ -8,6 +8,8 @@ namespace ThreeDLib
         [ExportCategory("External nodes")]
         [Export]
         public Node3D camera;
+        [Export]
+        public Node3D model;
 
         public override void _Ready()
         {
