@@ -1,6 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmtxra6am5eiu"]
+[gd_scene load_steps=5 format=3 uid="uid://dmtxra6am5eiu"]
 
 [ext_resource type="Script" path="res://Libs/3DLib/Cameras/OrbitCamera.cs" id="1_2q6vh"]
+[ext_resource type="Shader" path="res://Libs/3DLib/Shaders/outline.gdshader" id="2_rpqdd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wk1b3"]
+render_priority = 0
+shader = ExtResource("2_rpqdd")
+shader_parameter/depth_threshold = 0.2
+shader_parameter/depth_normal_threshold_scale = 0.2
+shader_parameter/normal_threshold = 0.5
+shader_parameter/edge_color = null
+shader_parameter/scale = 5.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_geafa"]
+material = SubResource("ShaderMaterial_wk1b3")
+flip_faces = true
+size = Vector2(2, 2)
 
 [node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera", "pivot")]
 script = ExtResource("1_2q6vh")
@@ -14,3 +29,7 @@ margin = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="Pivot"]
 current = true
+
+[node name="PostProcessingShader" type="MeshInstance3D" parent="Pivot/Camera3D"]
+mesh = SubResource("QuadMesh_geafa")
+skeleton = NodePath("../../..")
