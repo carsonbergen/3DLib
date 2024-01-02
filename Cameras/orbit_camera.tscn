@@ -29,5 +29,6 @@ current = true
 
 [node name="PostProcessingShader" type="MeshInstance3D" parent="Pivot/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+visible = false
 mesh = SubResource("QuadMesh_geafa")
 skeleton = NodePath("../../..")
