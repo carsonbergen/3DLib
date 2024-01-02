@@ -13,15 +13,15 @@ namespace ThreeDLib
         public VehicleWheel3D backLeftWheel;
         [Export]
         public VehicleWheel3D backRightWheel;
-        
+
         [ExportCategory("Vehicle & engine properties")]
         [ExportGroup("Rotation speeds")]
         [Export]
         public float leanSpeed = 10f;
         [Export]
-        public float baseTurnSpeed = 0.25f;
+        public float baseTurnSpeed = 0.5f;
         [Export]
-        public float boostTurnSpeed = 0.05f;
+        public float boostTurnSpeed = 0.25f;
         [Export]
         public float resetSpeed = 10f;
         [ExportGroup("Movement speeds")]
@@ -30,11 +30,16 @@ namespace ThreeDLib
         [Export]
         public float boostSpeed = 800f;
         [Export]
+        public float steeringSpeed = 1f;
+        [Export]
         public float brakingSpeed = 200f;
         [Export]
         public float maxBaseSpeed = 10f;
         [Export]
         public float maxBoostSpeed = 20f;
+        [ExportCategory("Physics")]
+        [Export]
+        public RayCast3D groundCast;
 
         private float speed = 0f;
         private float turnSpeed = 0f;
@@ -49,7 +54,7 @@ namespace ThreeDLib
 
             backLeftWheel.Steering = -(steeringInput * turnSpeed);
             backRightWheel.Steering = -(steeringInput * turnSpeed);
-            
+
 
             // Adjust speed of vehicle
             if (Input.IsActionPressed("vehicle_boost"))
@@ -62,16 +67,27 @@ namespace ThreeDLib
                 speed = baseSpeed;
                 turnSpeed = baseTurnSpeed;
             }
-            // Handle force application
-            float engineForceInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
-            EngineForce = engineForceInput * speed;
+            if (groundCast.IsColliding())
+            {
+                // Handle force application
+                float engineForceInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
+                EngineForce = engineForceInput * speed;
 
-            // If no input, begin braking
-            if (engineForceInput == 0f)
-                Brake = brakingSpeed * (float)delta;
 
+                // If no input, begin braking or rotating
+                if (engineForceInput == 0f)
+                {
+                    if (steeringInput != 0f)
+                    {
+                        AngularVelocity = AngularVelocity with { Y = steeringInput * steeringSpeed };
+                        EngineForce = steeringSpeed * turnSpeed;
+                    }
+                    else
+                        Brake = brakingSpeed * (float)delta;
+                }
+            }
             // Reset model roll
-            if (steeringInput == 0f)
+            if (steeringInput == 0f || !groundCast.IsColliding())
                 model.RotationDegrees = model.RotationDegrees with
                 {
                     X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
@@ -100,22 +116,26 @@ namespace ThreeDLib
         {
             // Clamp velocity
             // Clamp for base speed
-            if (speed == baseSpeed)
+            if (groundCast.IsColliding())
             {
-                LinearVelocity = LinearVelocity with
+                GD.Print("Ground cast is colliding");
+                if (speed == baseSpeed)
                 {
-                    X = Mathf.Clamp(LinearVelocity.X, -maxBaseSpeed, maxBaseSpeed),
-                    Z = Mathf.Clamp(LinearVelocity.Z, -maxBaseSpeed, maxBaseSpeed)
-                };
-            }
-            // Clamp for boost speed
-            else
-            {
-                LinearVelocity = LinearVelocity with
+                    LinearVelocity = LinearVelocity with
+                    {
+                        X = Mathf.Clamp(LinearVelocity.X, -maxBaseSpeed, maxBaseSpeed),
+                        Z = Mathf.Clamp(LinearVelocity.Z, -maxBaseSpeed, maxBaseSpeed)
+                    };
+                }
+                // Clamp for boost speed
+                else
                 {
-                    X = Mathf.Clamp(LinearVelocity.X, -maxBoostSpeed, maxBoostSpeed),
-                    Z = Mathf.Clamp(LinearVelocity.Z, -maxBoostSpeed, maxBoostSpeed)
-                };
+                    LinearVelocity = LinearVelocity with
+                    {
+                        X = Mathf.Clamp(LinearVelocity.X, -maxBoostSpeed, maxBoostSpeed),
+                        Z = Mathf.Clamp(LinearVelocity.Z, -maxBoostSpeed, maxBoostSpeed)
+                    };
+                }
             }
         }
     }
