@@ -6,16 +6,13 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wk1b3"]
 render_priority = 0
 shader = ExtResource("2_rpqdd")
-shader_parameter/depth_threshold = 0.2
-shader_parameter/depth_normal_threshold_scale = 0.2
-shader_parameter/normal_threshold = 0.5
-shader_parameter/edge_color = null
-shader_parameter/scale = 5.0
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_thickness = 1.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_geafa"]
+lightmap_size_hint = Vector2i(12, 12)
 material = SubResource("ShaderMaterial_wk1b3")
-flip_faces = true
-size = Vector2(2, 2)
+size = Vector2(3, 3)
 
 [node name="OrbitCamera" type="Node3D" node_paths=PackedStringArray("camera", "pivot")]
 script = ExtResource("1_2q6vh")
@@ -31,5 +28,6 @@ margin = 0.5
 current = true
 
 [node name="PostProcessingShader" type="MeshInstance3D" parent="Pivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("QuadMesh_geafa")
 skeleton = NodePath("../../..")

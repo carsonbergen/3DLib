@@ -17,7 +17,7 @@ public partial class OrbitCamera : Node3D
 	[Export]
 	public float movementSpeed = 15f;
 	[Export]
-	public float cameraSensitivity = 200f / 1000f;
+	public float cameraSensitivity = 1000f / 1000f;
 	[Export]
 	public float cameraAccelerationSpeed = 0.5f;
 	[Export]
