@@ -4,11 +4,27 @@ namespace ThreeDLib
 {
     public partial class HoverBike : Vehicle
     {
+        [ExportCategory("Wheels")]
+        [Export]
+        public VehicleWheel3D frontLeftWheel;
+        [Export]
+        public VehicleWheel3D frontRightWheel;
+        [Export]
+        public VehicleWheel3D backLeftWheel;
+        [Export]
+        public VehicleWheel3D backRightWheel;
+        
+        [ExportCategory("Vehicle & engine properties")]
+        [ExportGroup("Rotation speeds")]
         [Export]
         public float leanSpeed = 10f;
         [Export]
+        public float baseTurnSpeed = 0.25f;
+        [Export]
+        public float boostTurnSpeed = 0.05f;
+        [Export]
         public float resetSpeed = 10f;
-
+        [ExportGroup("Movement speeds")]
         [Export]
         public float baseSpeed = 400f;
         [Export]
@@ -21,19 +37,31 @@ namespace ThreeDLib
         public float maxBoostSpeed = 20f;
 
         private float speed = 0f;
+        private float turnSpeed = 0f;
 
         public override void _PhysicsProcess(double delta)
         {
             // Handle steering
             float steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
-            Steering = steeringInput * 0.4f;
+            Steering = steeringInput * turnSpeed;
+            frontLeftWheel.Steering = steeringInput * turnSpeed;
+            frontRightWheel.Steering = steeringInput * turnSpeed;
+
+            backLeftWheel.Steering = -(steeringInput * turnSpeed);
+            backRightWheel.Steering = -(steeringInput * turnSpeed);
+            
 
             // Adjust speed of vehicle
             if (Input.IsActionPressed("vehicle_boost"))
+            {
                 speed = boostSpeed;
+                turnSpeed = boostTurnSpeed;
+            }
             else
+            {
                 speed = baseSpeed;
-
+                turnSpeed = baseTurnSpeed;
+            }
             // Handle force application
             float engineForceInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
             EngineForce = engineForceInput * speed;
@@ -51,6 +79,7 @@ namespace ThreeDLib
             // Rotate model
             else
             {
+                GD.Print(model.RotationDegrees);
                 model.RotationDegrees = model.RotationDegrees with
                 {
                     X = Mathf.Lerp(
@@ -66,6 +95,7 @@ namespace ThreeDLib
             }
         }
 
+        // Clamp velocity
         public override void _IntegrateForces(PhysicsDirectBodyState3D state)
         {
             // Clamp velocity
