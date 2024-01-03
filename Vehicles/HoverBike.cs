@@ -2,33 +2,26 @@ using Godot;
 
 namespace ThreeDLib
 {
-    public partial class HoverBike : Vehicle
+    public partial class HoverBike : RigidBody3D
     {
-        [ExportCategory("Wheels")]
         [Export]
-        public VehicleWheel3D frontLeftWheel;
-        [Export]
-        public VehicleWheel3D frontRightWheel;
-        [Export]
-        public VehicleWheel3D backLeftWheel;
-        [Export]
-        public VehicleWheel3D backRightWheel;
+        public Node3D model;
 
         [ExportCategory("Vehicle & engine properties")]
         [ExportGroup("Rotation speeds")]
         [Export]
         public float leanSpeed = 10f;
         [Export]
-        public float baseTurnSpeed = 0.5f;
+        public float baseTurnSpeed = 5f;
         [Export]
-        public float boostTurnSpeed = 0.25f;
+        public float boostTurnSpeed = 2.5f;
         [Export]
         public float resetSpeed = 10f;
         [ExportGroup("Movement speeds")]
         [Export]
-        public float baseSpeed = 400f;
+        public float baseSpeed = 50f;
         [Export]
-        public float boostSpeed = 800f;
+        public float boostSpeed = 100f;
         [Export]
         public float steeringSpeed = 1f;
         [Export]
@@ -46,17 +39,9 @@ namespace ThreeDLib
 
         public override void _PhysicsProcess(double delta)
         {
-            // Handle steering
-            float steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
-            Steering = steeringInput * turnSpeed;
-            frontLeftWheel.Steering = steeringInput * turnSpeed;
-            frontRightWheel.Steering = steeringInput * turnSpeed;
+            var engineThrottleInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
+            var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
 
-            backLeftWheel.Steering = -(steeringInput * turnSpeed);
-            backRightWheel.Steering = -(steeringInput * turnSpeed);
-
-
-            // Adjust speed of vehicle
             if (Input.IsActionPressed("vehicle_boost"))
             {
                 speed = boostSpeed;
@@ -67,25 +52,20 @@ namespace ThreeDLib
                 speed = baseSpeed;
                 turnSpeed = baseTurnSpeed;
             }
+
+            if (steeringInput != 0f)
+                RotateY(steeringInput * (float)delta * turnSpeed);
+
             if (groundCast.IsColliding())
-            {
-                // Handle force application
-                float engineForceInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
-                EngineForce = engineForceInput * speed;
+                ApplyCentralForce(GlobalTransform.Basis.Z * engineThrottleInput * speed);
+            else
+                ApplyCentralForce(GlobalTransform.Basis.Z * speed);
+        }
 
+        public override void _Process(double delta)
+        {
+            var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
 
-                // If no input, begin braking or rotating
-                if (engineForceInput == 0f)
-                {
-                    if (steeringInput != 0f)
-                    {
-                        AngularVelocity = AngularVelocity with { Y = steeringInput * steeringSpeed };
-                        EngineForce = steeringSpeed * turnSpeed;
-                    }
-                    else
-                        Brake = brakingSpeed * (float)delta;
-                }
-            }
             // Reset model roll
             if (steeringInput == 0f || !groundCast.IsColliding())
                 model.RotationDegrees = model.RotationDegrees with
@@ -100,7 +80,7 @@ namespace ThreeDLib
                 {
                     X = Mathf.Lerp(
                                     model.RotationDegrees.X,
-                                    model.RotationDegrees.X + (45 * Steering),
+                                    model.RotationDegrees.X + (45 * steeringInput),
                                     (float)delta * leanSpeed
                                 )
                 };
@@ -108,34 +88,6 @@ namespace ThreeDLib
                 {
                     X = Mathf.Clamp(model.RotationDegrees.X, -15, 15)
                 };
-            }
-        }
-
-        // Clamp velocity
-        public override void _IntegrateForces(PhysicsDirectBodyState3D state)
-        {
-            // Clamp velocity
-            // Clamp for base speed
-            if (groundCast.IsColliding())
-            {
-                GD.Print("Ground cast is colliding");
-                if (speed == baseSpeed)
-                {
-                    LinearVelocity = LinearVelocity with
-                    {
-                        X = Mathf.Clamp(LinearVelocity.X, -maxBaseSpeed, maxBaseSpeed),
-                        Z = Mathf.Clamp(LinearVelocity.Z, -maxBaseSpeed, maxBaseSpeed)
-                    };
-                }
-                // Clamp for boost speed
-                else
-                {
-                    LinearVelocity = LinearVelocity with
-                    {
-                        X = Mathf.Clamp(LinearVelocity.X, -maxBoostSpeed, maxBoostSpeed),
-                        Z = Mathf.Clamp(LinearVelocity.Z, -maxBoostSpeed, maxBoostSpeed)
-                    };
-                }
             }
         }
     }
