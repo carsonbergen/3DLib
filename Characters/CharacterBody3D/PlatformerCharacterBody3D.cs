@@ -5,6 +5,9 @@ namespace ThreeDLib
 {
     public partial class PlatformerCharacterBody3D : PlayerCharacterBody3D
     {
+        [Export]
+        public bool isControlled = false;
+
         [ExportCategory("Physics")]
         [Export]
         public const float speed = 5.0f;
@@ -22,7 +25,8 @@ namespace ThreeDLib
         public override void _PhysicsProcess(double delta)
         {
             currentState = GetState();
-            Velocity = CalculateMovement(delta);
+            if (isControlled)
+                Velocity = CalculateMovement(delta);
             MoveAndSlide();
         }
 
