@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://hs5tdv3lxby3"]
+
+[ext_resource type="Script" path="res://Libs/3DLib/Event Handlers/GameEventHandler.cs" id="1_muk56"]
+
+[node name="GameEventHandler" type="Node" node_paths=PackedStringArray("messageLabel")]
+script = ExtResource("1_muk56")
+messageLabel = NodePath("UILayer/MessageLabel")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="MessageLabel" type="Label" parent="UILayer"]
+offset_right = 40.0
+offset_bottom = 23.0
