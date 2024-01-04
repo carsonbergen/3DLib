@@ -4,21 +4,28 @@ using System;
 public partial class GameEventHandler : Node
 {
 	[Export]
-	public Label messageLabel;
+	public Label interactionLabel;
 
-	public void PlayerInRangeOfInteractableObject(Node3D node)
+	public string GetInteractionText(string nodeName = "", string interactionMessage = "")
 	{
-		if (messageLabel != null)
+		// Get the first action 
+		InputEvent action = InputMap.ActionGetEvents("interact")[0];
+		return "Press " + action.AsText()[0] + " " + interactionMessage + nodeName;
+	}
+
+	public void PlayerInRangeOfInteractableObject(Node3D node, string interactionMessage)
+	{
+		if (interactionLabel != null)
 		{
-			messageLabel.Text = "Player in range of " + node.Name;
+			interactionLabel.Text = GetInteractionText(interactionMessage);
 		}
 	}
 
 	public void PlayerOutOfRangeOfInteractableObject(Node3D node)
 	{
-		if (messageLabel != null)
+		if (interactionLabel != null)
 		{
-			messageLabel.Text = "Player out of range of " + node.Name;
+			interactionLabel.Text = "";
 		}
 	}
 }

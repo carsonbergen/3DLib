@@ -118,7 +118,7 @@ namespace ThreeDLib
 		{
 			if (area.IsInGroup("Player"))
 			{
-				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this);
+				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this, "to get on the hoverbike");
 			}
 		}
 

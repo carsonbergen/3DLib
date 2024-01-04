@@ -2,12 +2,18 @@
 
 [ext_resource type="Script" path="res://Libs/3DLib/Event Handlers/GameEventHandler.cs" id="1_muk56"]
 
-[node name="GameEventHandler" type="Node" node_paths=PackedStringArray("messageLabel")]
+[node name="GameEventHandler" type="Node" node_paths=PackedStringArray("interactionLabel")]
 script = ExtResource("1_muk56")
-messageLabel = NodePath("UILayer/MessageLabel")
+interactionLabel = NodePath("UILayer/InteractionLabelContainer/InteractionLabel")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
-[node name="MessageLabel" type="Label" parent="UILayer"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="InteractionLabelContainer" type="CenterContainer" parent="UILayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractionLabel" type="Label" parent="UILayer/InteractionLabelContainer"]
+layout_mode = 2
