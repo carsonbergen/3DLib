@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmtxra6am5eiu"]
+
+[ext_resource type="Script" path="res://Libs/3DLib/src/Cameras/OrbitCamera.cs" id="1_2q6vh"]
+[ext_resource type="Shader" path="res://Libs/3DLib/src/Shaders/outline.gdshader" id="2_rpqdd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wk1b3"]
+render_priority = 0
+shader = ExtResource("2_rpqdd")
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_thickness = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_geafa"]
+lightmap_size_hint = Vector2i(12, 12)
+material = SubResource("ShaderMaterial_wk1b3")
+size = Vector2(5, 5)
+
+[node name="OrbitCamera" type="Node3D"]
+script = ExtResource("1_2q6vh")
+camera = Object(Camera3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"keep_aspect":1,"cull_mask":1048575,"environment":null,"attributes":null,"h_offset":0.0,"v_offset":0.0,"doppler_tracking":0,"projection":0,"current":true,"fov":75.0,"size":1.0,"frustum_offset":Vector2(0, 0),"near":0.05,"far":4000.0,"script":null)
+
+pivot = Object(SpringArm3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"collision_mask":1,"shape":null,"spring_length":2.5,"margin":0.5,"script":null)
+
+
+[node name="Pivot" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+spring_length = 2.5
+margin = 0.5
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+current = true
+
+[node name="PostProcessingShader" type="MeshInstance3D" parent="Pivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("QuadMesh_geafa")
+skeleton = NodePath("../../..")
