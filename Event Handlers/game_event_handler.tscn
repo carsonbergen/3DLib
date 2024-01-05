@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://hs5tdv3lxby3"]
 
-[ext_resource type="Script" path="res://Libs/3DLib/src/Event Handlers/GameEventHandler.cs" id="1_muk56"]
+[ext_resource type="Script" path="res://Libs/3DLib/Event Handlers/GameEventHandler.cs" id="1_muk56"]
 
 [node name="GameEventHandler" type="Node" node_paths=PackedStringArray("interactionLabel")]
 script = ExtResource("1_muk56")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dmtxra6am5eiu"]
 
-[ext_resource type="Script" path="res://Libs/3DLib/src/Cameras/OrbitCamera.cs" id="1_2q6vh"]
-[ext_resource type="Shader" path="res://Libs/3DLib/src/Shaders/outline.gdshader" id="2_rpqdd"]
+[ext_resource type="Script" path="res://Libs/3DLib/Cameras/OrbitCamera.cs" id="1_2q6vh"]
+[ext_resource type="Shader" path="res://Libs/3DLib/Shaders/outline.gdshader" id="2_rpqdd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wk1b3"]
 render_priority = 0
