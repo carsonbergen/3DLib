@@ -19,6 +19,8 @@ namespace ThreeDLib
 		public Node3D model;
 		[Export]
 		public Area3D interactionArea;
+		[Export]
+		public Marker3D seat;
 
 		[ExportCategory("Vehicle & engine properties")]
 		[ExportGroup("Rotation speeds")]
@@ -110,7 +112,14 @@ namespace ThreeDLib
 			}
 			if (isInteractable)
 			{
-
+				if (GetNode<PlayerCharacterBody3D>("Player") != null)
+				{
+					isControlled = true;
+				}
+				else 
+				{
+					isControlled = false;
+				}
 			}
 		}
 
@@ -118,7 +127,7 @@ namespace ThreeDLib
 		{
 			if (area.IsInGroup("Player"))
 			{
-				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this, "to get on the hoverbike");
+				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this);
 			}
 		}
 

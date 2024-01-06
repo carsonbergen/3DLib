@@ -13,11 +13,11 @@ public partial class GameEventHandler : Node
 		return "Press " + action.AsText()[0] + " " + interactionMessage + nodeName;
 	}
 
-	public void PlayerInRangeOfInteractableObject(Node3D node, string interactionMessage)
+	public void PlayerInRangeOfInteractableObject(Node3D node)
 	{
 		if (interactionLabel != null)
 		{
-			interactionLabel.Text = GetInteractionText(interactionMessage);
+			interactionLabel.Text = GetInteractionText((string)node.GetMeta("interaction_message"));
 		}
 	}
 
