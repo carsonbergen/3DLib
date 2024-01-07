@@ -11,5 +11,7 @@ namespace ThreeDLib
 
         [Export]
         public Node3D model;
+        [Export]
+        public Marker3D seat;
     }
 }

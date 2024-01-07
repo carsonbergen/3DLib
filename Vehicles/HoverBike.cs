@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 
 namespace ThreeDLib
@@ -52,91 +53,73 @@ namespace ThreeDLib
 		private float speed = 0f;
 		private float turnSpeed = 0f;
 
-		public override void _PhysicsProcess(double delta)
+        public override void _PhysicsProcess(double delta)
 		{
-			if (isControlled)
+			var engineThrottleInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
+			var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
+
+			if (Input.IsActionPressed("vehicle_boost"))
 			{
-				var engineThrottleInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
-				var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
-
-				if (Input.IsActionPressed("vehicle_boost"))
-				{
-					speed = boostSpeed;
-					turnSpeed = boostTurnSpeed;
-				}
-				else
-				{
-					speed = baseSpeed;
-					turnSpeed = baseTurnSpeed;
-				}
-
-				if (steeringInput != 0f)
-					RotateY(steeringInput * (float)delta * turnSpeed);
-
-				if (groundCast.IsColliding())
-					ApplyCentralForce(GlobalTransform.Basis.Z * engineThrottleInput * speed);
-				else
-					ApplyCentralForce(GlobalTransform.Basis.Z * speed);
+				speed = boostSpeed;
+				turnSpeed = boostTurnSpeed;
 			}
+			else
+			{
+				speed = baseSpeed;
+				turnSpeed = baseTurnSpeed;
+			}
+
+			if (steeringInput != 0f)
+				RotateY(steeringInput * (float)delta * turnSpeed);
+
+			if (groundCast.IsColliding())
+				ApplyCentralForce(GlobalTransform.Basis.Z * engineThrottleInput * speed);
+			else
+				ApplyCentralForce(GlobalTransform.Basis.Z * speed);
 		}
 
 		public override void _Process(double delta)
 		{
-			if (isControlled)
-			{
-				var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
+			var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
 
-				// Reset model roll
-				if (steeringInput == 0f || !groundCast.IsColliding())
-					model.RotationDegrees = model.RotationDegrees with
-					{
-						X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
-					};
-				// Rotate model
-				else
+			// Reset model roll
+			if (steeringInput == 0f || !groundCast.IsColliding())
+				model.RotationDegrees = model.RotationDegrees with
 				{
-					GD.Print(model.RotationDegrees);
-					model.RotationDegrees = model.RotationDegrees with
-					{
-						X = Mathf.Lerp(
-										model.RotationDegrees.X,
-										model.RotationDegrees.X + (45 * steeringInput),
-										(float)delta * leanSpeed
-									)
-					};
-					model.RotationDegrees = model.RotationDegrees with
-					{
-						X = Mathf.Clamp(model.RotationDegrees.X, -15, 15)
-					};
-				}
-			}
-			if (isInteractable)
+					X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
+				};
+			// Rotate model
+			else
 			{
-				if (GetNode<PlayerCharacterBody3D>("Player") != null)
+				model.RotationDegrees = model.RotationDegrees with
 				{
-					isControlled = true;
-				}
-				else 
+					X = Mathf.Lerp(
+									model.RotationDegrees.X,
+									model.RotationDegrees.X + (45 * steeringInput),
+									(float)delta * leanSpeed
+								)
+				};
+				model.RotationDegrees = model.RotationDegrees with
 				{
-					isControlled = false;
-				}
+					X = Mathf.Clamp(model.RotationDegrees.X, -15, 15)
+				};
 			}
 		}
 
-		public void OnAreaEntered(Area3D area)
-		{
-			if (area.IsInGroup("Player"))
-			{
-				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this);
-			}
-		}
+		// public void OnAreaEntered(Area3D area)
+		// {
+		// 	if (area.IsInGroup("Player"))
+		// 	{
+		// 		GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(this);
+		// 	}
+		// }
 
-		public void OnAreaExited(Area3D area)
-		{
-			if (area.IsInGroup("Player"))
-			{
-				GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(this);
-			}
-		}
+		// public void OnAreaExited(Area3D area)
+		// {
+		// 	if (area.IsInGroup("Player"))
+		// 	{
+		// 		GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(this);
+		// 	}
+		// }
 	}
 }

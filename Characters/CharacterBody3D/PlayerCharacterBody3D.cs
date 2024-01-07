@@ -8,7 +8,7 @@ namespace ThreeDLib
         [Export]
         public bool isControlled = false;
         [Export]
-        public bool isInVehicle = false;
+        public bool isOnHoverBike = false;
 
         [ExportCategory("Physics")]
         [Export]
@@ -29,8 +29,8 @@ namespace ThreeDLib
 
         private Node3D parent;
 
-        // Most recent object that entered the interactable area
-        private Node3D mostRecentVehicle;
+        // Most recent HoverBike object that entered the interactable area
+        public HoverBike mostRecentHoverBike;
 
         public override void _Ready()
         {
@@ -48,6 +48,9 @@ namespace ThreeDLib
         */
         public State GetState()
         {
+            if (isOnHoverBike) 
+                return State.InVehicle;
+            
             if (!IsOnFloor())
             {
                 return State.InAir;
@@ -77,43 +80,73 @@ namespace ThreeDLib
         {
             if (Input.IsActionJustPressed("interact"))
             {
-                if (mostRecentVehicle != null && !isInVehicle)
+                if (mostRecentHoverBike != null && !isOnHoverBike)
                 {
                     isControlled = false;
-                    isInVehicle = true;
+                    isOnHoverBike = true;
                     parent.RemoveChild(this);
-                    mostRecentVehicle.AddChild(this);
-                    GlobalPosition = mostRecentVehicle.GlobalPosition;
-                    GlobalRotationDegrees = mostRecentVehicle.GlobalRotationDegrees;
+                    mostRecentHoverBike.AddChild(this);
+                    GlobalPosition = mostRecentHoverBike.GlobalPosition;
+                    GlobalRotationDegrees = mostRecentHoverBike.GlobalRotationDegrees;
                     GlobalRotationDegrees = GlobalRotationDegrees with { Y = GlobalRotationDegrees.Y + 180 };
                     Velocity = Vector3.Zero;
                 }
-                else if (isInVehicle)
+                else if (isOnHoverBike)
                 {
-                    var position = mostRecentVehicle.GlobalPosition;
+                    var position = mostRecentHoverBike.GlobalPosition;
                     isControlled = true;
-                    isInVehicle = false;
-                    mostRecentVehicle.RemoveChild(this);
+                    isOnHoverBike = false;
+                    mostRecentHoverBike.RemoveChild(this);
                     parent.AddChild(this);
                     GlobalPosition = position with { Y = GlobalPosition.Y + 2 };
                 }
             }
         }
 
+        public void OnInteractionAreaAreaEntered(Area3D area)
+        {
+            if (!isOnHoverBike)
+            {
+                if (area.IsInGroup("Vehicle"))
+                {
+                    var parent = area.GetParent<RigidBody3D>();
+                    parent.ProcessMode = ProcessModeEnum.Inherit;
+                    mostRecentHoverBike = (HoverBike) parent;
+                    GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(parent);
+                }
+            }
+        }
+
+        public void OnInteractionAreaAreaExited(Area3D area)
+        {
+            if (!isOnHoverBike)
+            {
+                if (area.IsInGroup("Vehicle"))
+                {
+                    var parent = area.GetParent<RigidBody3D>();
+                    parent.ProcessMode = ProcessModeEnum.Disabled;
+                    mostRecentHoverBike = null;
+                    GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(parent);
+                }
+            }
+            GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(parent);
+        }
+
         public void OnInteractionAreaBodyEntered(Node3D body)
         {
-            if (!isInVehicle)
+            if (!isOnHoverBike)
             {
                 if (body.IsInGroup("Vehicle"))
                 {
-                    mostRecentVehicle = body;
+                    if (body is HoverBike)
+                        mostRecentHoverBike = (HoverBike) body;
                 }
             }
         }
 
         public void OnInteractionAreaBodyExited(Node3D body)
         {
-            if (!isInVehicle)
+            if (!isOnHoverBike)
             {
                 if (body.IsInGroup("Vehicle"))
                 {

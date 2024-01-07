@@ -7,6 +7,7 @@ namespace ThreeDLib
         Idle,
         InAir,
         Walking,
-        Sprinting
+        Sprinting,
+        InVehicle
     }
 }

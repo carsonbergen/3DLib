@@ -14,11 +14,27 @@ namespace ThreeDLib
         public override void _PhysicsProcess(double delta)
         {
             currentState = GetState();
-            if (isControlled) {
+            if (isControlled && currentState != State.InVehicle)
                 Velocity = CalculateMovement(delta);
-            }
             HandleInteraction(delta);
             MoveAndSlide();
+        }
+
+        public override void _Process(double delta)
+        {
+            if (currentState == State.InVehicle)
+            {
+                if (mostRecentHoverBike != null)
+                {
+                    GlobalPosition = mostRecentHoverBike.seat.GlobalPosition;
+                    GlobalRotationDegrees = mostRecentHoverBike.seat.GlobalRotationDegrees with
+                    {
+                        X = -mostRecentHoverBike.seat.GlobalRotationDegrees.X,
+                        Y = mostRecentHoverBike.seat.GlobalRotationDegrees.Y + 180,
+                        Z = -mostRecentHoverBike.seat.GlobalRotationDegrees.Z
+                    };
+                }
+            }
         }
 
         public override Vector3 CalculateMovement(double delta)
@@ -43,9 +59,10 @@ namespace ThreeDLib
             */
             if (inputDir != Vector2.Zero && currentState != State.InAir)
             {
-                GlobalRotationDegrees = GlobalRotationDegrees with {Y = camera.GlobalRotationDegrees.Y};
-                model.GlobalRotationDegrees = model.GlobalRotationDegrees with {
-                    Y = (float) Mathf.Lerp(model.GlobalRotationDegrees.Y, camera.GlobalRotationDegrees.Y, delta * 10)
+                GlobalRotationDegrees = GlobalRotationDegrees with { Y = camera.GlobalRotationDegrees.Y };
+                model.GlobalRotationDegrees = model.GlobalRotationDegrees with
+                {
+                    Y = (float)Mathf.Lerp(model.GlobalRotationDegrees.Y, camera.GlobalRotationDegrees.Y, delta * 10)
                 };
             }
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
