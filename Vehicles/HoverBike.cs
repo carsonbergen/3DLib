@@ -53,55 +53,68 @@ namespace ThreeDLib
 		private float speed = 0f;
 		private float turnSpeed = 0f;
 
-        public override void _PhysicsProcess(double delta)
+		public override void _PhysicsProcess(double delta)
 		{
-			var engineThrottleInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
-			var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
-
-			if (Input.IsActionPressed("vehicle_boost"))
+			if (isControlled)
 			{
-				speed = boostSpeed;
-				turnSpeed = boostTurnSpeed;
-			}
-			else
-			{
-				speed = baseSpeed;
-				turnSpeed = baseTurnSpeed;
-			}
+				var engineThrottleInput = Input.GetAxis("vehicle_backward", "vehicle_forward");
+				var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
 
-			if (steeringInput != 0f)
-				RotateY(steeringInput * (float)delta * turnSpeed);
+				if (Input.IsActionPressed("vehicle_boost"))
+				{
+					speed = boostSpeed;
+					turnSpeed = boostTurnSpeed;
+				}
+				else
+				{
+					speed = baseSpeed;
+					turnSpeed = baseTurnSpeed;
+				}
 
-			if (groundCast.IsColliding())
-				ApplyCentralForce(GlobalTransform.Basis.Z * engineThrottleInput * speed);
-			else
-				ApplyCentralForce(GlobalTransform.Basis.Z * speed);
+				if (steeringInput != 0f)
+					RotateY(steeringInput * (float)delta * turnSpeed);
+
+				if (groundCast.IsColliding())
+					ApplyCentralForce(GlobalTransform.Basis.Z * engineThrottleInput * speed);
+				else
+					ApplyCentralForce(GlobalTransform.Basis.Z * speed);
+			}
 		}
 
 		public override void _Process(double delta)
 		{
-			var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
+			if (isControlled)
+			{
+				var steeringInput = Input.GetAxis("vehicle_right", "vehicle_left");
 
-			// Reset model roll
-			if (steeringInput == 0f || !groundCast.IsColliding())
-				model.RotationDegrees = model.RotationDegrees with
+				// Reset model roll
+				if (steeringInput == 0f || !groundCast.IsColliding())
+					model.RotationDegrees = model.RotationDegrees with
+					{
+						X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
+					};
+				// Rotate model
+				else
 				{
-					X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
-				};
-			// Rotate model
+					model.RotationDegrees = model.RotationDegrees with
+					{
+						X = Mathf.Lerp(
+										model.RotationDegrees.X,
+										model.RotationDegrees.X + (45 * steeringInput),
+										(float)delta * leanSpeed
+									)
+					};
+					model.RotationDegrees = model.RotationDegrees with
+					{
+						X = Mathf.Clamp(model.RotationDegrees.X, -15, 15)
+					};
+				}
+			}
 			else
 			{
 				model.RotationDegrees = model.RotationDegrees with
 				{
-					X = Mathf.Lerp(
-									model.RotationDegrees.X,
-									model.RotationDegrees.X + (45 * steeringInput),
-									(float)delta * leanSpeed
-								)
-				};
-				model.RotationDegrees = model.RotationDegrees with
-				{
-					X = Mathf.Clamp(model.RotationDegrees.X, -15, 15)
+					X = Mathf.Lerp(model.RotationDegrees.X, 0f, (float)delta * resetSpeed)
 				};
 			}
 		}

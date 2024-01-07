@@ -90,10 +90,12 @@ namespace ThreeDLib
                     GlobalRotationDegrees = mostRecentHoverBike.GlobalRotationDegrees;
                     GlobalRotationDegrees = GlobalRotationDegrees with { Y = GlobalRotationDegrees.Y + 180 };
                     Velocity = Vector3.Zero;
+                    mostRecentHoverBike.isControlled = true;
                 }
                 else if (isOnHoverBike)
                 {
                     var position = mostRecentHoverBike.GlobalPosition;
+                    mostRecentHoverBike.isControlled = false;
                     isControlled = true;
                     isOnHoverBike = false;
                     mostRecentHoverBike.RemoveChild(this);
@@ -110,7 +112,6 @@ namespace ThreeDLib
                 if (area.IsInGroup("Vehicle"))
                 {
                     var parent = area.GetParent<RigidBody3D>();
-                    parent.ProcessMode = ProcessModeEnum.Inherit;
                     mostRecentHoverBike = (HoverBike) parent;
                     GetNode<GameEventHandler>("/root/GameEventHandler").PlayerInRangeOfInteractableObject(parent);
                 }
@@ -119,16 +120,6 @@ namespace ThreeDLib
 
         public void OnInteractionAreaAreaExited(Area3D area)
         {
-            if (!isOnHoverBike)
-            {
-                if (area.IsInGroup("Vehicle"))
-                {
-                    var parent = area.GetParent<RigidBody3D>();
-                    parent.ProcessMode = ProcessModeEnum.Disabled;
-                    mostRecentHoverBike = null;
-                    GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(parent);
-                }
-            }
             GetNode<GameEventHandler>("/root/GameEventHandler").PlayerOutOfRangeOfInteractableObject(parent);
         }
 
