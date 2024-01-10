@@ -65,6 +65,7 @@ namespace ThreeDLib
                     Y = (float)Mathf.Lerp(model.GlobalRotationDegrees.Y, camera.GlobalRotationDegrees.Y, delta * 10)
                 };
             }
+            
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
             // Double jump
