@@ -1,8 +1,9 @@
+using System;
 using Godot;
 
 namespace ThreeDLib
 {
-    public partial class Weapon : Node3D
+    public partial class Weapon : Area3D
     {
         [Export]
         public float damage = 0f;

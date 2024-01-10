@@ -2,7 +2,7 @@ using Godot;
 
 namespace ThreeDLib 
 {
-    public partial class MeleeWeapon : Weapon 
+    public partial class MeleeWeapon : Weapon
     {
         
     }

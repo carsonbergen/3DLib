@@ -22,6 +22,7 @@ namespace ThreeDLib
 
         public override void _Process(double delta)
         {
+            GD.Print(health);
             if (currentState == State.InVehicle)
             {
                 if (mostRecentHoverBike != null)

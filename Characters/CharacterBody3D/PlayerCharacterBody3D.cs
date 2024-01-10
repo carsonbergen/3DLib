@@ -149,5 +149,17 @@ namespace ThreeDLib
                 }
             }
         }
+
+        public void OnHitBoxAreaAreaEntered(Area3D area)
+        {
+            if (canBeDamaged)
+            {
+                if (area.IsInGroup("EnemyWeapon"))
+                {
+                    Weapon weapon = (Weapon)area;
+                    health -= weapon.damage;
+                }
+            }
+        }
     }
 }
