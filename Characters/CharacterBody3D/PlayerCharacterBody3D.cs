@@ -9,6 +9,10 @@ namespace ThreeDLib
         public bool isControlled = false;
         [Export]
         public bool isOnHoverBike = false;
+        [Export]
+        public bool canBeDamaged = true;
+        [Export]
+        public float health = 10f;
 
         [ExportCategory("Physics")]
         [Export]
