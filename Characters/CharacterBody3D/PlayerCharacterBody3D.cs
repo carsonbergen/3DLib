@@ -37,6 +37,8 @@ namespace ThreeDLib
         public HoverBike mostRecentHoverBike;
 
         public bool isGettingHurt = false;
+        
+        // Use a queue instead
         public Godot.Collections.Dictionary damagers = new();
 
         public override void _Ready()
