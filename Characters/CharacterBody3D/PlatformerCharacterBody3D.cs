@@ -22,7 +22,7 @@ namespace ThreeDLib
 
         public override void _Process(double delta)
         {
-            GD.Print(health);
+            GD.Print(damagers);
             if (currentState == State.InVehicle)
             {
                 if (mostRecentHoverBike != null)
@@ -98,6 +98,14 @@ namespace ThreeDLib
             }
 
             return velocity;
+        }
+
+        public override void HandleDamagers()
+        {
+            foreach (var (instanceId, area) in damagers) 
+            {
+                // Damage logic
+            }
         }
     }
 }

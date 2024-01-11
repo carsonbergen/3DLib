@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using Godot.Collections;
 
 namespace ThreeDLib
 {
@@ -35,6 +35,9 @@ namespace ThreeDLib
 
         // Most recent HoverBike object that entered the interactable area
         public HoverBike mostRecentHoverBike;
+
+        public bool isGettingHurt = false;
+        public Godot.Collections.Dictionary damagers = new();
 
         public override void _Ready()
         {
@@ -109,6 +112,8 @@ namespace ThreeDLib
             }
         }
 
+        public virtual void HandleDamagers() {}
+
         public void OnInteractionAreaAreaEntered(Area3D area)
         {
             if (!isOnHoverBike)
@@ -156,9 +161,17 @@ namespace ThreeDLib
             {
                 if (area.IsInGroup("EnemyWeapon"))
                 {
-                    Weapon weapon = (Weapon)area;
-                    health -= weapon.damage;
+                    if (!damagers.ContainsKey(area.GetInstanceId()))
+                        damagers.Add(area.GetInstanceId(), area);
                 }
+            }
+        }
+
+        public void OnHitBoxAreaAreaExited(Area3D area)
+        {
+            if (damagers.ContainsKey(area.GetInstanceId()))
+            {
+                damagers.Remove(area.GetInstanceId());
             }
         }
     }
