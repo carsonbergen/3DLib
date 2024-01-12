@@ -22,11 +22,14 @@ namespace ThreeDLib
         [Export]
         public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+        // All of the nodes to be set when modifying a player scene
         [ExportCategory("Internal nodes")]
         [Export]
         public Area3D interactionArea;
         [Export]
         public Node3D model;
+
+        // All of the nodes to be set outside of the player
         [ExportCategory("External nodes")]
         [Export]
         public Node3D camera;
