@@ -25,8 +25,10 @@ namespace ThreeDLib
 
 		[ExportCategory("Vehicle & engine properties")]
 		[ExportGroup("Rotation speeds")]
+		// Important for the animation
 		[Export]
 		public float leanSpeed = 10f;
+		// Controls how fast the vehicle turns 
 		[Export]
 		public float baseTurnSpeed = 5f;
 		[Export]
