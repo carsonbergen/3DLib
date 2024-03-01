@@ -16,25 +16,13 @@ namespace ThreeDLib
             currentState = GetState();
             if (isControlled && currentState != State.InVehicle)
                 Velocity = CalculateMovement(delta);
-            HandleInteraction(delta);
             MoveAndSlide();
         }
 
         public override void _Process(double delta)
         {
-            GD.Print(damagers);
             if (currentState == State.InVehicle)
             {
-                if (mostRecentHoverBike != null)
-                {
-                    GlobalPosition = mostRecentHoverBike.seat.GlobalPosition;
-                    GlobalRotationDegrees = mostRecentHoverBike.seat.GlobalRotationDegrees with
-                    {
-                        X = -mostRecentHoverBike.seat.GlobalRotationDegrees.X,
-                        Y = mostRecentHoverBike.seat.GlobalRotationDegrees.Y + 180,
-                        Z = -mostRecentHoverBike.seat.GlobalRotationDegrees.Z
-                    };
-                }
             }
         }
 
@@ -98,14 +86,6 @@ namespace ThreeDLib
             }
 
             return velocity;
-        }
-
-        public override void HandleDamagers()
-        {
-            foreach (var (instanceId, area) in damagers) 
-            {
-                // Damage logic
-            }
         }
     }
 }
