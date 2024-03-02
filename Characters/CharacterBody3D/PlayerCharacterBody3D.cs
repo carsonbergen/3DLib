@@ -41,6 +41,8 @@ namespace ThreeDLib
         // Use a queue instead
         public Godot.Collections.Dictionary damagers = new();
 
+        public State currentState;
+
         public override void _Ready()
         {
             if (camera == null)

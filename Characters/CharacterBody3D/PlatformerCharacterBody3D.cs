@@ -7,7 +7,6 @@ namespace ThreeDLib
     {
         // Platformer logic related variables
         private bool doubleJumpAvailable = true;
-        private State currentState;
         private float movementFactor = 1f;
         private Vector3 jumpDirection;
 
