@@ -13,6 +13,10 @@ namespace ThreeDLib
         private float movementFactor = 1f;
         private Vector3 jumpDirection;
 
+        public override void _Ready()
+        {
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
 
         public override void _PhysicsProcess(double delta)
         {
