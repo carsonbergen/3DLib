@@ -28,7 +28,7 @@ namespace ThreeDLib
 
         public override void _Input(InputEvent @event)
         {
-            if (@event is InputEventMouseMotion eventMouseMotion)
+            if ((@event is InputEventMouseMotion eventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured))
             {
                 RotateY(Mathf.DegToRad(-eventMouseMotion.Relative.X * mouseSensitivity));
                 upperBody.RotateX(Mathf.DegToRad(-eventMouseMotion.Relative.Y * mouseSensitivity));
