@@ -5,8 +5,11 @@ namespace ThreeDLib
 {
     public partial class FPSCharacterBody3D : PlayerCharacterBody3D
     {
+        // TODO: load from config file
         [Export]
         public float mouseSensitivity = 0.5f;
+
+        // Holds the camera
         [Export]
         public Node3D upperBody = null;
 
@@ -33,6 +36,14 @@ namespace ThreeDLib
                 RotateY(Mathf.DegToRad(-eventMouseMotion.Relative.X * mouseSensitivity));
                 upperBody.RotateX(Mathf.DegToRad(-eventMouseMotion.Relative.Y * mouseSensitivity));
                 upperBody.RotationDegrees = upperBody.RotationDegrees with { X = Mathf.Clamp(upperBody.RotationDegrees.X, -90, 89) };
+            }
+            if (@event is InputEventKey inputEventKey) {
+                if (inputEventKey.IsActionPressed("open_menu")) {
+                    if (Input.MouseMode == Input.MouseModeEnum.Captured)
+                        Input.MouseMode = Input.MouseModeEnum.Visible;
+                    else 
+                        Input.MouseMode = Input.MouseModeEnum.Captured;
+                }
             }
         }
 
