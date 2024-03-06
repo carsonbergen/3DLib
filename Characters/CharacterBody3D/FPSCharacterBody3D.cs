@@ -13,6 +13,9 @@ namespace ThreeDLib
         [Export]
         public Node3D upperBody = null;
 
+        [Export]
+        public float jumpDistance = 5f;
+
         private float movementFactor = 1f;
         private Vector3 jumpDirection;
 
@@ -24,6 +27,7 @@ namespace ThreeDLib
         public override void _PhysicsProcess(double delta)
         {
             currentState = GetState();
+            GD.Print(currentState);
             if (isControlled && currentState != State.InVehicle)
                 Velocity = CalculateMovement(delta);
             MoveAndSlide();
@@ -33,6 +37,7 @@ namespace ThreeDLib
         {
             if ((@event is InputEventMouseMotion eventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured))
             {
+
                 RotateY(Mathf.DegToRad(-eventMouseMotion.Relative.X * mouseSensitivity));
                 upperBody.RotateX(Mathf.DegToRad(-eventMouseMotion.Relative.Y * mouseSensitivity));
                 upperBody.RotationDegrees = upperBody.RotationDegrees with { X = Mathf.Clamp(upperBody.RotationDegrees.X, -90, 89) };
@@ -72,10 +77,14 @@ namespace ThreeDLib
             }
             else if (currentState != State.InAir)
             {
-                jumpDirection = Vector3.Inf;
+                jumpDirection = Vector3.Zero;
             }
-
-            if (direction != Vector3.Zero)
+            
+            if (jumpDirection != Vector3.Zero) {
+                velocity.X = Mathf.MoveToward(Velocity.X, jumpDirection.X * jumpDistance, speed);
+                velocity.Z = Mathf.MoveToward(Velocity.Z, jumpDirection.Z * jumpDistance, speed);
+            }
+            else if (direction != Vector3.Zero)
             {
                 velocity.X = direction.X * speed;
                 velocity.Z = direction.Z * speed;
