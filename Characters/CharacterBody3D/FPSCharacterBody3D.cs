@@ -27,7 +27,6 @@ namespace ThreeDLib
         public override void _PhysicsProcess(double delta)
         {
             currentState = GetState();
-            GD.Print(currentState);
             if (isControlled && currentState != State.InVehicle)
                 Velocity = CalculateMovement(delta);
             MoveAndSlide();
@@ -65,6 +64,13 @@ namespace ThreeDLib
             {
                 movementFactor = 1f;
             }
+
+            GD.Print(speed);
+
+            if (currentState == State.Walking) 
+                speed = walkSpeed;
+            else if (currentState == State.Sprinting)
+                speed = sprintSpeed;
 
             Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 

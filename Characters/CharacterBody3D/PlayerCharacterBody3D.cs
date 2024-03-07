@@ -16,7 +16,9 @@ namespace ThreeDLib
 
         [ExportCategory("Physics")]
         [Export]
-        public const float speed = 5.0f;
+        public const float walkSpeed = 5.0f;
+        [Export]
+        public const float sprintSpeed = 10f;
         [Export]
         public const float jumpVelocity = 4.5f;
         [Export]
@@ -35,6 +37,8 @@ namespace ThreeDLib
         public Node3D camera;
 
         private Node3D parent;
+
+        public float speed = walkSpeed;
 
         public bool isGettingHurt = false;
         
