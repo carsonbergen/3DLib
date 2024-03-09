@@ -38,6 +38,8 @@ namespace ThreeDLib
 
         private Node3D parent;
 
+        // Needs to have a default value greater than zero as otherwise
+        // getState will not change state into walking or sprinting.
         public float speed = walkSpeed;
 
         public bool isGettingHurt = false;
