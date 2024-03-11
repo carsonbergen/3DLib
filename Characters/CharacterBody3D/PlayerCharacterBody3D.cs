@@ -61,7 +61,7 @@ namespace ThreeDLib
         }
 
         /**
-            Gets the current state of the player object based on physical state.
+            Gets the current state of the player object based on physical state in the Godot world.
         */
         public State GetState()
         {
@@ -72,7 +72,7 @@ namespace ThreeDLib
             {
                 return State.InAir;
             }
-
+            
             if (Velocity != Vector3.Zero)
             {
                 if (Input.IsActionPressed("move_sprint"))
@@ -87,6 +87,7 @@ namespace ThreeDLib
 
         /**
             Method meant to be overridden by a player subclass.
+            Calculates Velocity vector for use in _PhysicsProcess
         */
         public virtual Vector3 CalculateMovement(double delta) { return Vector3.Zero; }
     }

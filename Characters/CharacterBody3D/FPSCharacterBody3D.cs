@@ -34,6 +34,7 @@ namespace ThreeDLib
 
         public override void _Input(InputEvent @event)
         {
+            // Calculate mouse capture
             if ((@event is InputEventMouseMotion eventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured))
             {
 
@@ -41,6 +42,7 @@ namespace ThreeDLib
                 upperBody.RotateX(Mathf.DegToRad(-eventMouseMotion.Relative.Y * mouseSensitivity));
                 upperBody.RotationDegrees = upperBody.RotationDegrees with { X = Mathf.Clamp(upperBody.RotationDegrees.X, -90, 89) };
             }
+            // Disable mouse capture
             if (@event is InputEventKey inputEventKey) {
                 if (inputEventKey.IsActionPressed("open_menu")) {
                     if (Input.MouseMode == Input.MouseModeEnum.Captured)
