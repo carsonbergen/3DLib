@@ -3,7 +3,7 @@ using System;
 
 namespace FPS
 {
-    public partial class FPSGunHolder : Node3D
+    public partial class FPSWeaponHolder : Node3D
     {
         [ExportGroup("Weapon Sway Settings")]
         [Export]
