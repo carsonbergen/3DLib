@@ -67,8 +67,6 @@ namespace ThreeDLib
 				movementFactor = 1f;
 			}
 
-			GD.Print(speed);
-
 			if (currentState == State.Walking) 
 				speed = walkSpeed;
 			else if (currentState == State.Sprinting)
