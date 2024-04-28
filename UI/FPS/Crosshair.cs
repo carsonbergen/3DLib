@@ -19,27 +19,44 @@ public partial class Crosshair : CenterContainer
 
 	public override void _Ready()
 	{
-		adjustSpread(spread, length);
+		adjustSpread(spread);
+		adjustLength(length);
 	}
 
-	public void update()
-	{
+    public override void _Process(double delta)
+    {
+    }
 
-	}
-
-	public void adjustSpread(float newSpread, float newLength)
+	public void adjustSpread(float newSpread)
 	{
+		spread = newSpread;
 		// Set up left line
 		leftLine.SetPointPosition(0, new Vector2(-newSpread, 0));
-		leftLine.SetPointPosition(1, new Vector2(-(newSpread + newLength), 0));
+		leftLine.SetPointPosition(1, new Vector2(-(newSpread + length), 0));
 		// Set up right line
 		rightLine.SetPointPosition(0, new Vector2(newSpread, 0));
-		rightLine.SetPointPosition(1, new Vector2(newSpread + newLength, 0));
+		rightLine.SetPointPosition(1, new Vector2(newSpread + length, 0));
 		// Set up top line
 		topLine.SetPointPosition(0, new Vector2(0, -newSpread));
-		topLine.SetPointPosition(1, new Vector2(0, -(newSpread + newLength)));
+		topLine.SetPointPosition(1, new Vector2(0, -(newSpread + length)));
 		// Set up bottom line
 		bottomLine.SetPointPosition(0, new Vector2(0, newSpread));
-		bottomLine.SetPointPosition(1, new Vector2(0, newSpread + newLength));
+		bottomLine.SetPointPosition(1, new Vector2(0, newSpread + length));
+	}
+
+	public void adjustLength(float newLength) {
+		length = newLength;
+		// Set up left line
+		leftLine.SetPointPosition(0, new Vector2(-spread, 0));
+		leftLine.SetPointPosition(1, new Vector2(-(spread + newLength), 0));
+		// Set up right line
+		rightLine.SetPointPosition(0, new Vector2(spread, 0));
+		rightLine.SetPointPosition(1, new Vector2(spread + newLength, 0));
+		// Set up top line
+		topLine.SetPointPosition(0, new Vector2(0, -spread));
+		topLine.SetPointPosition(1, new Vector2(0, -(spread + newLength)));
+		// Set up bottom line
+		bottomLine.SetPointPosition(0, new Vector2(0, spread));
+		bottomLine.SetPointPosition(1, new Vector2(0, spread + newLength));
 	}
 }
