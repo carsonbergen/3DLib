@@ -9,6 +9,9 @@ namespace FPS
         [Export]
         public ArmatureIK armatureIK;
 
+        [Export]
+        public int maxWeapons = 2;
+
         [ExportGroup("Weapon Sway Settings")]
         [Export]
         public double swayAmount = 25f;
@@ -20,18 +23,21 @@ namespace FPS
         public Vector2 swayVector = new Vector2(0.4f, 0.4f);
         [Export]
         public Vector2 swayClamp = new Vector2(15f, 15f);
-        
+
+
         private Vector2 mouseMovement = new Vector2();
 
         private int currentWeaponIndex = 0;
+        private Weapon currentWeapon;
 
         public override void _Ready()
         {
-            var weapon = GetChild<Weapon>(currentWeaponIndex);
+            // Get first weapon
+            Weapon weapon = GetChild<Weapon>(0);
+            weapon.Visible = true;
+            currentWeapon = weapon;
             // Setup armature IK
-            armatureIK.leftArmTarget = weapon.leftArmTarget;
-            armatureIK.rightArmTarget = weapon.rightArmTarget;
-            armatureIK.Setup();
+            UpdateArmatureIK();
         }
 
         public override void _Input(InputEvent @event)
@@ -43,6 +49,24 @@ namespace FPS
                     ((InputEventMouseMotion)@event).Relative.X
                 );
             }
+
+            if (@event is InputEventKey)
+            {
+                if (Input.IsActionJustPressed("switch_weapon"))
+                {
+                    currentWeapon.Visible = false;
+                    currentWeaponIndex += 1;
+
+                    if (currentWeaponIndex > (maxWeapons - 1) || currentWeaponIndex > (GetChildCount() - 1))
+                    {
+                        currentWeaponIndex = 0;
+                    }
+
+                    currentWeapon = GetChild<Weapon>(currentWeaponIndex);
+                    currentWeapon.Visible = true;
+                    UpdateArmatureIK();
+                }
+            }
         }
 
         public override void _Process(double delta)
@@ -53,6 +77,13 @@ namespace FPS
                 Sway(delta);
             else
                 RotationDegrees = RotationDegrees.Lerp(Vector3.Zero, (float)(swayResetSpeed * delta));
+        }
+
+        public void UpdateArmatureIK()
+        {
+            armatureIK.leftArmTarget = currentWeapon.leftArmTarget;
+            armatureIK.rightArmTarget = currentWeapon.rightArmTarget;
+            armatureIK.Setup();
         }
 
         public void Sway(double delta)
