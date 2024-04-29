@@ -14,7 +14,7 @@ namespace ThreeDLib
         [Export]
         public Marker3D rightArmTarget;
 
-        public override void _Ready()
+        public void Setup()
         {
             if (leftArmIK == null || rightArmIK == null || leftArmTarget == null || rightArmTarget == null) {
                 GD.PushError(

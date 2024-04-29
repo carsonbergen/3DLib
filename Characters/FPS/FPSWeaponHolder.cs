@@ -1,10 +1,14 @@
 using Godot;
 using System;
+using ThreeDLib;
 
 namespace FPS
 {
     public partial class FPSWeaponHolder : Node3D
     {
+        [Export]
+        public ArmatureIK armatureIK;
+
         [ExportGroup("Weapon Sway Settings")]
         [Export]
         public double swayAmount = 25f;
@@ -16,7 +20,19 @@ namespace FPS
         public Vector2 swayVector = new Vector2(0.4f, 0.4f);
         [Export]
         public Vector2 swayClamp = new Vector2(15f, 15f);
+        
         private Vector2 mouseMovement = new Vector2();
+
+        private int currentWeaponIndex = 0;
+
+        public override void _Ready()
+        {
+            var weapon = GetChild<Weapon>(currentWeaponIndex);
+            // Setup armature IK
+            armatureIK.leftArmTarget = weapon.leftArmTarget;
+            armatureIK.rightArmTarget = weapon.rightArmTarget;
+            armatureIK.Setup();
+        }
 
         public override void _Input(InputEvent @event)
         {
