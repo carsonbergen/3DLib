@@ -14,7 +14,7 @@ namespace ThreeDLib
 		public Node3D upperBody = null;
 
 		[Export]
-		public float jumpDistance = 5f;
+		public float jumpDistance = 1f;
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
@@ -87,8 +87,8 @@ namespace ThreeDLib
 			}
 			
 			if (jumpDirection != Vector3.Zero) {
-				velocity.X = Mathf.MoveToward(Velocity.X, jumpDirection.X * jumpDistance, speed);
-				velocity.Z = Mathf.MoveToward(Velocity.Z, jumpDirection.Z * jumpDistance, speed);
+				velocity.X = jumpDirection.X * speed * jumpDistance;
+				velocity.Z = jumpDirection.Z * speed * jumpDistance;
 			}
 			else if (direction != Vector3.Zero)
 			{
