@@ -14,9 +14,16 @@ namespace ThreeDLib
         [Export]
         public float damage = 0f;
         [Export]
-        public float recoil = 0f;
+        public float recoil = 0.05f;
         [Export]
-        public float recoilSpeed = 0f;
+        public float recoilSpeed = 0.1f;
+        [Export]
+        public float recoilWeight = 8f;
+        [Export]
+        public float recoilTorque = 15f;
+        [Export]
+        public float recoilKickback = 0.05f;
+
         [Export]
         public string name = "";
         [Export]
@@ -33,7 +40,7 @@ namespace ThreeDLib
 
         public void shoot()
         {
-            if (currentAmmoInMagazine > 0)
+            if (currentAmmoInMagazine > 0 || magazineSize == -1)
             {
                 currentAmmoInMagazine -= 1;
                 shootAnimation();
@@ -49,11 +56,14 @@ namespace ThreeDLib
                 tween.Kill();
                 tween = null;
             }
-            var oldY = Position.Y;
 
             tween = CreateTween().BindNode(this).SetTrans(Tween.TransitionType.Sine).SetParallel();
-            tween.TweenProperty(this, "position:y", Position.Y + recoil, recoilSpeed);
-            tween.Chain().TweenProperty(this, "position:y", oldY, recoilSpeed * 2);
+            tween.TweenProperty(this, "position:y", Position.Y + recoil, recoilSpeed / recoilWeight);
+            tween.TweenProperty(this, "rotation_degrees:x", RotationDegrees.X + recoilTorque, recoilSpeed / recoilWeight);
+            tween.TweenProperty(this, "position:z", Position.Z + recoilKickback, recoilSpeed / recoilWeight);
+            tween.Chain().TweenProperty(this, "position:y", 0, recoilSpeed);
+            tween.Chain().TweenProperty(this, "rotation_degrees:x", 0, recoilSpeed);
+            tween.Chain().TweenProperty(this, "position:z", 0, recoilSpeed);
         }
 
         public int getCurrentAmmoInMagazine()
