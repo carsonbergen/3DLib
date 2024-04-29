@@ -44,7 +44,7 @@ namespace FPS
             if (GetChildCount() > 0)
             {
                 // float weight = (float)GetChild<Node3D>(currentWeapon).GetMeta("weight");
-                float weight = 0.25f;
+                float weight = 5f;
                 RotationDegrees = RotationDegrees with
                 {
                     X = Mathf.Lerp(

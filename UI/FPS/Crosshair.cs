@@ -23,9 +23,9 @@ public partial class Crosshair : CenterContainer
 		adjustLength(length);
 	}
 
-    public override void _Process(double delta)
-    {
-    }
+	public override void _Process(double delta)
+	{
+	}
 
 	public void adjustSpread(float newSpread)
 	{
@@ -44,7 +44,8 @@ public partial class Crosshair : CenterContainer
 		bottomLine.SetPointPosition(1, new Vector2(0, newSpread + length));
 	}
 
-	public void adjustLength(float newLength) {
+	public void adjustLength(float newLength)
+	{
 		length = newLength;
 		// Set up left line
 		leftLine.SetPointPosition(0, new Vector2(-spread, 0));
