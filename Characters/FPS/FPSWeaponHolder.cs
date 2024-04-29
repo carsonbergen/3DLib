@@ -27,7 +27,6 @@ namespace FPS
 
         private Vector2 mouseMovement = new Vector2();
 
-        private int currentWeaponIndex = 0;
         private Weapon currentWeapon;
 
         public override void _Ready()
@@ -55,14 +54,14 @@ namespace FPS
                 if (Input.IsActionJustPressed("switch_weapon"))
                 {
                     currentWeapon.Visible = false;
-                    currentWeaponIndex += 1;
+                    var weaponIndex = currentWeapon.GetIndex() + 1;
 
-                    if (currentWeaponIndex > (maxWeapons - 1) || currentWeaponIndex > (GetChildCount() - 1))
+                    if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
                     {
-                        currentWeaponIndex = 0;
+                        weaponIndex = 0;
                     }
 
-                    currentWeapon = GetChild<Weapon>(currentWeaponIndex);
+                    currentWeapon = GetChild<Weapon>(weaponIndex);
                     currentWeapon.Visible = true;
                     UpdateArmatureIK();
                 }
