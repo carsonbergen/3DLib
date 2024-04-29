@@ -15,6 +15,8 @@ namespace ThreeDLib
 
 		[Export]
 		public float jumpDistance = 1f;
+		[Export]
+		public float inAirMovementFactor = 0.5f;
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
@@ -87,8 +89,8 @@ namespace ThreeDLib
 			}
 			
 			if (jumpDirection != Vector3.Zero) {
-				velocity.X = jumpDirection.X * speed * jumpDistance;
-				velocity.Z = jumpDirection.Z * speed * jumpDistance;
+				velocity.X = (jumpDirection.X * speed * jumpDistance / 2) + (direction.X * speed * inAirMovementFactor);
+				velocity.Z = (jumpDirection.Z * speed * jumpDistance / 2) + (direction.Z * speed * inAirMovementFactor);
 			}
 			else if (direction != Vector3.Zero)
 			{
