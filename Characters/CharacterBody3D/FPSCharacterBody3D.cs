@@ -39,7 +39,6 @@ namespace ThreeDLib
 			// Calculate mouse capture
 			if ((@event is InputEventMouseMotion eventMouseMotion) && (Input.MouseMode == Input.MouseModeEnum.Captured))
 			{
-
 				RotateY(Mathf.DegToRad(-eventMouseMotion.Relative.X * mouseSensitivity));
 				upperBody.RotateX(Mathf.DegToRad(-eventMouseMotion.Relative.Y * mouseSensitivity));
 				upperBody.RotationDegrees = upperBody.RotationDegrees with { X = Mathf.Clamp(upperBody.RotationDegrees.X, -90, 89) };

@@ -64,6 +64,16 @@ namespace FPS
                     currentWeapon = GetChild<Weapon>(weaponIndex);
                     currentWeapon.Visible = true;
                     UpdateArmatureIK();
+
+                    GD.Print(currentWeapon.getCurrentAmmoInMagazine());
+                }
+            }
+
+            if (@event is InputEventMouseButton)
+            {
+                if (Input.IsActionJustPressed("shoot_weapon"))
+                {
+                    currentWeapon.shoot();
                 }
             }
         }
