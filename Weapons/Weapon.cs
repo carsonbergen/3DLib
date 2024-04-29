@@ -49,6 +49,11 @@ namespace ThreeDLib
             GD.Print("current ammo: ", currentAmmoInMagazine);
         }
 
+        public void reload() 
+        {
+            currentAmmoInMagazine = magazineSize;
+        }
+
         public void shootAnimation()
         {
             if (tween != null)

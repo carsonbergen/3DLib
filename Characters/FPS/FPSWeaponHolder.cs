@@ -24,10 +24,11 @@ namespace FPS
         [Export]
         public Vector2 swayClamp = new Vector2(15f, 15f);
 
+        public Weapon currentWeapon;
 
         private Vector2 mouseMovement = new Vector2();
 
-        private Weapon currentWeapon;
+
 
         public override void _Ready()
         {
@@ -66,6 +67,10 @@ namespace FPS
                     UpdateArmatureIK();
 
                     GD.Print(currentWeapon.getCurrentAmmoInMagazine());
+                }
+                else if (Input.IsActionJustPressed("reload_weapon"))
+                {
+                    currentWeapon.reload();
                 }
             }
 
