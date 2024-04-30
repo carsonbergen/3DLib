@@ -6,13 +6,23 @@ namespace ThreeDLib
 {
     public partial class Weapon : Node3D
     {
+        [ExportCategory("IK Targets")]
         [Export]
         public Marker3D leftArmTarget;
         [Export]
         public Marker3D rightArmTarget;
 
+        [ExportCategory("Gun Data")]
         [Export]
         public float damage = 0f;
+        [Export]
+        public float fireRate = 0.05f;
+        [Export]
+        public string name = "";
+        [Export]
+        public int magazineSize = 0;
+
+        [ExportCategory("Recoil Animation Values")]
         [Export]
         public float recoil = 0.05f;
         [Export]
@@ -23,33 +33,46 @@ namespace ThreeDLib
         public float recoilTorque = 15f;
         [Export]
         public float recoilKickback = 0.05f;
-
         [Export]
-        public string name = "";
-        [Export]
-        public int magazineSize = 0;
+        public float maxZ = 0.25f;
 
         private int currentAmmoInMagazine = 0;
 
         private Tween tween;
+
+        private float currentTime = 0;
 
         public override void _Ready()
         {
             currentAmmoInMagazine = magazineSize;
         }
 
-        public void shoot()
+        public override void _Process(double delta)
         {
-            if (currentAmmoInMagazine > 0 || magazineSize == -1)
+            Position = Position with
             {
-                currentAmmoInMagazine -= 1;
-                shootAnimation();
-            }
+                Z = Mathf.Clamp(Position.Z, 0, maxZ)
+            };
 
-            GD.Print("current ammo: ", currentAmmoInMagazine);
+            currentTime += (float)delta;
         }
 
-        public void reload() 
+        public void shoot()
+        {
+            if (currentTime > fireRate)
+            {
+                if (currentAmmoInMagazine > 0 || magazineSize == -1)
+                {
+                    currentAmmoInMagazine -= 1;
+                    shootAnimation();
+                    currentTime = 0;
+                }
+
+                GD.Print("current ammo: ", currentAmmoInMagazine);
+            }
+        }
+
+        public void reload()
         {
             currentAmmoInMagazine = magazineSize;
         }
