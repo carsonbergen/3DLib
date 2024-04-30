@@ -52,7 +52,7 @@ namespace FPS
 
             if (@event is InputEventKey)
             {
-                if (Input.IsActionJustPressed("switch_weapon"))
+                if (Input.IsActionJustPressed("next_weapon"))
                 {
                     currentWeapon.Visible = false;
                     var weaponIndex = currentWeapon.GetIndex() + 1;
@@ -65,8 +65,20 @@ namespace FPS
                     currentWeapon = GetChild<Weapon>(weaponIndex);
                     currentWeapon.Visible = true;
                     UpdateArmatureIK();
+                }
+                else if (Input.IsActionJustPressed("previous_weapon"))
+                {
+                    currentWeapon.Visible = false;
+                    var weaponIndex = currentWeapon.GetIndex() - 1;
 
-                    GD.Print(currentWeapon.getCurrentAmmoInMagazine());
+                    if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
+                    {
+                        weaponIndex = 0;
+                    }
+
+                    currentWeapon = GetChild<Weapon>(weaponIndex);
+                    currentWeapon.Visible = true;
+                    UpdateArmatureIK();
                 }
                 else if (Input.IsActionJustPressed("reload_weapon"))
                 {
