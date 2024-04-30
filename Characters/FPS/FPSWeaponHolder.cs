@@ -73,7 +73,7 @@ namespace FPS
 
                     if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
                     {
-                        weaponIndex = 0;
+                        weaponIndex = GetChildCount() - 1;
                     }
 
                     currentWeapon = GetChild<Weapon>(weaponIndex);
