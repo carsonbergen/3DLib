@@ -113,14 +113,14 @@ namespace ThreeDLib
                     currentTime = 0;
 
                     var obj = bulletRaycast.GetCollider();
-                    GD.Print(obj);
+                    // GD.Print(obj);
                     if (obj is Enemy enemy)
                     {
                         enemy.applyDamagers(damagers);
                     }
                 }
 
-                GD.Print("current ammo: ", currentAmmoInMagazine);
+                // GD.Print("current ammo: ", currentAmmoInMagazine);
             }
         }
 

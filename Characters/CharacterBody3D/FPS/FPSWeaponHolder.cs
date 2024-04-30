@@ -85,18 +85,12 @@ namespace FPS
                     currentWeapon.reload();
                 }
             }
-
-            if (@event is InputEventMouseButton)
-            {
-
-            }
         }
 
         public override void _PhysicsProcess(double delta)
         {
             if (currentWeapon.automatic)
             {
-                GD.Print("automatic");
                 if (Input.IsActionPressed("shoot_weapon"))
                 {
                     currentWeapon.shoot();

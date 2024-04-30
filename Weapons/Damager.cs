@@ -11,7 +11,7 @@ namespace ThreeDLib
         public void damageBehaviour(Enemy enemy) 
         {
             enemy.health -= damage;
-            GD.Print("enemy health:\t", enemy.health);
+            // GD.Print("enemy health:\t", enemy.health);
         }
 
         public Damager() 
