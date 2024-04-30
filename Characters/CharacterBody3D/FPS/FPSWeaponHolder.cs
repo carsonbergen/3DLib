@@ -85,6 +85,10 @@ namespace FPS
                     currentWeapon.reload();
                 }
             }
+
+            if (@event is InputEventMouseButton)
+            {
+            }
         }
 
         public override void _PhysicsProcess(double delta)
