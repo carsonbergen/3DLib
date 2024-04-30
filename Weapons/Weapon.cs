@@ -6,6 +6,12 @@ namespace ThreeDLib
 {
     public partial class Weapon : Node3D
     {
+        [ExportCategory("External Nodes")]
+        [Export]
+        public Crosshair crosshair;
+        [Export]
+        public RayCast3D bulletRaycast;
+
         [ExportCategory("IK Targets")]
         [Export]
         public Marker3D leftArmTarget;
@@ -21,6 +27,12 @@ namespace ThreeDLib
         public string name = "";
         [Export]
         public int magazineSize = 0;
+        [Export]
+        public float accuracy = 5;
+        [Export]
+        public float range = 1000f;
+        [Export]
+        public float recoilResetRate = 0.1f;
 
         [ExportCategory("Recoil Animation Values")]
         [Export]
@@ -36,11 +48,15 @@ namespace ThreeDLib
         [Export]
         public float maxZ = 0.25f;
 
+        [ExportCategory("Other Internal Nodes")]
+
         private int currentAmmoInMagazine = 0;
 
         private Tween tween;
 
         private float currentTime = 0;
+
+        private float bulletRadius = 0f;
 
         public override void _Ready()
         {
@@ -55,6 +71,17 @@ namespace ThreeDLib
             };
 
             currentTime += (float)delta;
+
+            if (Visible)
+            {
+                bulletRadius = accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z);
+                crosshair.adjustSpread(bulletRadius);
+
+                if (currentTime > recoilResetRate)
+                {
+                    bulletRaycast.TargetPosition = new Vector3(0, 0, -range);
+                }
+            }
         }
 
         public void shoot()
@@ -63,8 +90,16 @@ namespace ThreeDLib
             {
                 if (currentAmmoInMagazine > 0 || magazineSize == -1)
                 {
-                    currentAmmoInMagazine -= 1;
                     shootAnimation();
+
+                    GD.Randomize();
+                    bulletRaycast.TargetPosition = bulletRaycast.TargetPosition with
+                    {
+                        X = (float)GD.RandRange(-bulletRadius, bulletRadius),
+                        Y = (float)GD.RandRange(-bulletRadius, bulletRadius)
+                    };
+                    currentAmmoInMagazine -= 1;
+
                     currentTime = 0;
                 }
 

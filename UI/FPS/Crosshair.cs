@@ -23,10 +23,6 @@ public partial class Crosshair : CenterContainer
 		adjustLength(length);
 	}
 
-	public override void _Process(double delta)
-	{
-	}
-
 	public void adjustSpread(float newSpread)
 	{
 		spread = newSpread;

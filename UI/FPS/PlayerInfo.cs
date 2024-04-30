@@ -10,6 +10,9 @@ namespace FPS
 		[Export]
 		public RichTextLabel ammoCounter;
 		[Export]
+		public RichTextLabel weaponLabel;
+
+		[Export]
 		public Label reloadWarning;
 
 		public override void _Process(double delta)
@@ -17,7 +20,8 @@ namespace FPS
 			int currentAmmo = weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
 			// Ammo counter logic
 			ammoCounter.Text = currentAmmo.ToString();
-
+			weaponLabel.Text = weaponHolder.currentWeapon.name;
+			
 			// Reload message
 			if (currentAmmo == 0)
 			{
