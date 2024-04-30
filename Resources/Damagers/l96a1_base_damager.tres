@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Damager" load_steps=2 format=3 uid="uid://dj3xseadvipar"]
+
+[ext_resource type="Script" path="res://src/libs/3DLib/Weapons/Damager.cs" id="1_lshh4"]
+
+[resource]
+script = ExtResource("1_lshh4")
+damage = 125.0

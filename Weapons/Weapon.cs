@@ -20,11 +20,11 @@ namespace ThreeDLib
 
         [ExportCategory("Gun Data")]
         [Export]
-        public float damage = 0f;
-        [Export]
         public float fireRate = 0.05f;
         [Export]
         public string name = "";
+        [Export]
+        public bool automatic = false;
         [Export]
         public int magazineSize = 0;
         [Export]
@@ -33,6 +33,8 @@ namespace ThreeDLib
         public float range = 1000f;
         [Export]
         public float recoilResetRate = 0.1f;
+        [Export]
+        public Godot.Collections.Array<Damager> damagers { get; set; }
 
         [ExportCategory("Recoil Animation Values")]
         [Export]
@@ -47,6 +49,8 @@ namespace ThreeDLib
         public float recoilKickback = 0.05f;
         [Export]
         public float maxZ = 0.25f;
+        [Export]
+        public float maxXRotation = 65f;
 
         [ExportCategory("Other Internal Nodes")]
 
@@ -68,6 +72,11 @@ namespace ThreeDLib
             Position = Position with
             {
                 Z = Mathf.Clamp(Position.Z, 0, maxZ)
+            };
+
+            RotationDegrees = RotationDegrees with 
+            {
+                X = Mathf.Clamp(RotationDegrees.X, 0, maxXRotation)
             };
 
             currentTime += (float)delta;
@@ -98,9 +107,17 @@ namespace ThreeDLib
                         X = (float)GD.RandRange(-bulletRadius, bulletRadius),
                         Y = (float)GD.RandRange(-bulletRadius, bulletRadius)
                     };
+
                     currentAmmoInMagazine -= 1;
 
                     currentTime = 0;
+
+                    var obj = bulletRaycast.GetCollider();
+                    GD.Print(obj);
+                    if (obj is Enemy enemy)
+                    {
+                        enemy.applyDamagers(damagers);
+                    }
                 }
 
                 GD.Print("current ammo: ", currentAmmoInMagazine);
