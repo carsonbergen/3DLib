@@ -16,11 +16,11 @@ namespace ThreeDLib
 
         [ExportCategory("Physics")]
         [Export]
-        public const float walkSpeed = 5.0f;
+        public float walkSpeed = 5.0f;
         [Export]
-        public const float sprintSpeed = 10f;
+        public float sprintSpeed = 10f;
         [Export]
-        public const float jumpVelocity = 4.5f;
+        public float jumpVelocity = 4.5f;
         [Export]
         public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -40,7 +40,7 @@ namespace ThreeDLib
 
         // Needs to have a default value greater than zero as otherwise
         // getState will not change state into walking or sprinting.
-        public float speed = walkSpeed;
+        public float speed = 0;
 
         public bool isGettingHurt = false;
         
@@ -49,8 +49,10 @@ namespace ThreeDLib
 
         public State currentState;
 
-        public override void _Ready()
+        public void Setup()
         {
+            speed = walkSpeed;
+            currentState = State.Idle;
             if (camera == null)
             {
                 GD.PrintErr("Camera can't be null");
@@ -58,6 +60,7 @@ namespace ThreeDLib
             }
             // Gets the root node3d of the current scene (not the actual root)
             parent = GetNode<Node3D>("../");
+            GD.Print("Set up");
         }
 
         /**

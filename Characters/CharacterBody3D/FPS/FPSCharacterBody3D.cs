@@ -23,6 +23,7 @@ namespace ThreeDLib
 
 		public override void _Ready()
 		{
+			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 

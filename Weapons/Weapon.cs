@@ -124,11 +124,6 @@ namespace ThreeDLib
             }
         }
 
-        public void ads()
-        {
-            scopeLayer.Visible = !scopeLayer.Visible;
-        }
-
         public void reload()
         {
             currentAmmoInMagazine = magazineSize;
