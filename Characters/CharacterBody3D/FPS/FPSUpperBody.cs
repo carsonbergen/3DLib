@@ -9,7 +9,7 @@ namespace FPS
         public FPSCharacterBody3D player;
 
         [Export]
-        public Node3D gunHolder;
+        public FPSWeaponHolder weaponHolder;
 
         [ExportGroup("Procedural Animation Settings")]
         [Export]
@@ -29,7 +29,7 @@ namespace FPS
         public override void _Ready()
         {
             base._Ready();
-            if (gunHolder == null || player == null)
+            if (weaponHolder == null || player == null)
             {
                 GD.PrintErr("No player provided to UpperBody node.");
                 GetTree().Quit();
@@ -60,9 +60,9 @@ namespace FPS
                 tween = null;
             }
             tween = this.CreateTween().BindNode(this).SetTrans(Tween.TransitionType.Sine).SetParallel();
-            tween.TweenProperty(gunHolder, "position:y", upY, speed);
-            tween.Chain().TweenProperty(gunHolder, "position:y", downY, speed).SetTrans(Tween.TransitionType.Bounce);
-            tween.Chain().TweenProperty(gunHolder, "position:y", defaultY, speed);
+            tween.TweenProperty(weaponHolder, "position:y", upY, speed);
+            tween.Chain().TweenProperty(weaponHolder, "position:y", downY, speed).SetTrans(Tween.TransitionType.Bounce);
+            tween.Chain().TweenProperty(weaponHolder, "position:y", defaultY, speed);
         }
 
     }

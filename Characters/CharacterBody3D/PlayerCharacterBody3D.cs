@@ -41,7 +41,7 @@ namespace ThreeDLib
         // Needs to have a default value greater than zero as otherwise
         // getState will not change state into walking or sprinting.
         public float speed = 0;
-        
+
         // Use a queue instead
         public Godot.Collections.Dictionary damagers = new();
 
@@ -58,7 +58,6 @@ namespace ThreeDLib
             }
             // Gets the root node3d of the current scene (not the actual root)
             parent = GetNode<Node3D>("../");
-            GD.Print("Set up");
         }
 
         /**
@@ -66,14 +65,14 @@ namespace ThreeDLib
         */
         public State GetState()
         {
-            if (isInVehicle) 
+            if (isInVehicle)
                 return State.InVehicle;
-            
+
             if (!IsOnFloor())
             {
                 return State.InAir;
             }
-            
+
             if (Velocity != Vector3.Zero)
             {
                 if (Input.IsActionPressed("move_sprint"))

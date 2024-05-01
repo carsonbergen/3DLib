@@ -18,6 +18,10 @@ namespace ThreeDLib
         [Export]
         public Marker3D rightArmTarget;
 
+        [ExportCategory("Animation Settings")]
+        [Export]
+        public float defaultZPosition;
+
         [ExportCategory("Gun Data")]
         [Export]
         public float fireRate = 0.05f;
@@ -28,11 +32,18 @@ namespace ThreeDLib
         [Export]
         public int magazineSize = 0;
         [Export]
-        public float accuracy = 5;
-        [Export]
         public float range = 1000f;
         [Export]
         public float recoilResetRate = 0.1f;
+        [Export]
+        public bool hasScope = false;
+        [Export]
+        public float adsSpeed = 1f;
+        [Export]
+        public float adsAccuracy = 2.5f;
+        [Export]
+        public float hipFireAccuracy = 5;
+
         [Export]
         public Godot.Collections.Array<Damager> damagers { get; set; }
 
@@ -53,6 +64,8 @@ namespace ThreeDLib
         public float maxXRotation = 65f;
 
         [ExportCategory("Other Internal Nodes")]
+        [Export]
+        public Node3D pivot;
 
         private int currentAmmoInMagazine = 0;
 
@@ -62,8 +75,21 @@ namespace ThreeDLib
 
         private float bulletRadius = 0f;
 
+        private float accuracy = 0f;
+
+        private bool scopedIn = false;
+
         public override void _Ready()
         {
+            accuracy = hipFireAccuracy;
+            if (pivot == null)
+            {
+                pivot = GetChild<Node3D>(0);
+            }
+            pivot.Position = pivot.Position with
+            {
+                Z = defaultZPosition
+            };
             currentAmmoInMagazine = magazineSize;
         }
 
@@ -74,7 +100,7 @@ namespace ThreeDLib
                 Z = Mathf.Clamp(Position.Z, 0, maxZ)
             };
 
-            RotationDegrees = RotationDegrees with 
+            RotationDegrees = RotationDegrees with
             {
                 X = Mathf.Clamp(RotationDegrees.X, 0, maxXRotation)
             };
@@ -90,7 +116,33 @@ namespace ThreeDLib
                 {
                     bulletRaycast.TargetPosition = new Vector3(0, 0, -range);
                 }
+
+                if (scopedIn)
+                {
+                    accuracy = adsAccuracy;
+                }
+                else
+                {
+                    accuracy = hipFireAccuracy;
+                }
             }
+        }
+
+        public void ads(bool input)
+        {
+            scopedIn = input;
+            if (hasScope)
+            {
+                // Handle logic for when there is a scope
+            }
+            else
+            {
+            }
+        }
+
+        public bool isScopedIn()
+        {
+            return scopedIn;
         }
 
         public void shoot()
@@ -119,8 +171,6 @@ namespace ThreeDLib
                         enemy.applyDamagers(damagers);
                     }
                 }
-
-                // GD.Print("current ammo: ", currentAmmoInMagazine);
             }
         }
 

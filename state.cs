@@ -8,6 +8,7 @@ namespace ThreeDLib
         InAir,
         Walking,
         Sprinting,
-        InVehicle
+        InVehicle,
+        ADSing
     }
 }

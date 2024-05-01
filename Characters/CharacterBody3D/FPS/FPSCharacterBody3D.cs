@@ -1,3 +1,4 @@
+using FPS;
 using Godot;
 using System;
 
@@ -11,10 +12,12 @@ namespace ThreeDLib
 
 		// Holds the camera
 		[Export]
-		public Node3D upperBody = null;
+		public FPSUpperBody upperBody = null;
 
 		[Export]
 		public float jumpDistance = 1f;
+		[Export]
+		public float adsWalkSpeed = 2.5f;
 		[Export]
 		public float inAirMovementFactor = 0.5f;
 
@@ -30,6 +33,10 @@ namespace ThreeDLib
 		public override void _PhysicsProcess(double delta)
 		{
 			currentState = GetState();
+			if (upperBody.weaponHolder.currentWeapon.isScopedIn())
+			{
+				currentState = State.ADSing;
+			}
 			if (isControlled && currentState != State.InVehicle)
 				Velocity = CalculateMovement(delta);
 			MoveAndSlide();
@@ -45,11 +52,13 @@ namespace ThreeDLib
 				upperBody.RotationDegrees = upperBody.RotationDegrees with { X = Mathf.Clamp(upperBody.RotationDegrees.X, -90, 89) };
 			}
 			// Disable mouse capture
-			if (@event is InputEventKey inputEventKey) {
-				if (inputEventKey.IsActionPressed("open_menu")) {
+			if (@event is InputEventKey inputEventKey)
+			{
+				if (inputEventKey.IsActionPressed("open_menu"))
+				{
 					if (Input.MouseMode == Input.MouseModeEnum.Captured)
 						Input.MouseMode = Input.MouseModeEnum.Visible;
-					else 
+					else
 						Input.MouseMode = Input.MouseModeEnum.Captured;
 				}
 			}
@@ -69,10 +78,12 @@ namespace ThreeDLib
 				movementFactor = 1f;
 			}
 
-			if (currentState == State.Walking) 
+			if (currentState == State.Walking)
 				speed = walkSpeed;
 			else if (currentState == State.Sprinting)
 				speed = sprintSpeed;
+			else if (currentState == State.ADSing)
+				speed = adsWalkSpeed;
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 
@@ -87,8 +98,9 @@ namespace ThreeDLib
 			{
 				jumpDirection = Vector3.Zero;
 			}
-			
-			if (jumpDirection != Vector3.Zero) {
+
+			if (jumpDirection != Vector3.Zero)
+			{
 				velocity.X = (jumpDirection.X * speed * jumpDistance / 2) + (direction.X * speed * inAirMovementFactor);
 				velocity.Z = (jumpDirection.Z * speed * jumpDistance / 2) + (direction.Z * speed * inAirMovementFactor);
 			}

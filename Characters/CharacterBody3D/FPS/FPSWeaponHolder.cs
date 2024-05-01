@@ -12,6 +12,9 @@ namespace FPS
         [Export]
         public int maxWeapons = 2;
 
+        [Export]
+        public Vector3 defaultPosition;
+
         [ExportGroup("Weapon Sway Settings")]
         [Export]
         public double swayAmount = 25f;
@@ -26,9 +29,7 @@ namespace FPS
 
         public Weapon currentWeapon;
 
-        private Vector2 mouseMovement = new Vector2();
-
-
+        private Vector2 mouseMovement = new Vector2(0, 0);
 
         public override void _Ready()
         {
@@ -106,6 +107,23 @@ namespace FPS
                 {
                     currentWeapon.shoot();
                 }
+            }
+
+            if (Input.IsActionPressed("ads"))
+            {
+                Position = Position with
+                {
+                    X = (float)Mathf.Lerp(Position.X, 0, delta * currentWeapon.adsSpeed)
+                };
+                currentWeapon.ads(true);
+            }
+            else
+            {
+                Position = Position with
+                {
+                    X = (float)Mathf.Lerp(Position.X, defaultPosition.X, delta * currentWeapon.adsSpeed)
+                };
+                currentWeapon.ads(false);
             }
         }
 
