@@ -41,8 +41,6 @@ namespace ThreeDLib
         // Needs to have a default value greater than zero as otherwise
         // getState will not change state into walking or sprinting.
         public float speed = 0;
-
-        public bool isGettingHurt = false;
         
         // Use a queue instead
         public Godot.Collections.Dictionary damagers = new();

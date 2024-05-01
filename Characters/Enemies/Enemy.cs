@@ -17,5 +17,14 @@ public partial class Enemy : RigidBody3D
 			damager.damageBehaviour(this);
 			GD.Print(this, "'s health after:\t", health, "\n");
 		}
+
+		if (health <= 0)
+		{
+			Visible = false;
+			SetProcess(false);
+			SetPhysicsProcess(false);
+			DisableMode = DisableModeEnum.Remove;
+			QueueFree();
+		}
 	}
 }
