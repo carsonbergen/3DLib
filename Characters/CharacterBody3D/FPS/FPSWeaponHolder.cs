@@ -120,13 +120,10 @@ namespace FPS
         public void SwitchWeapon(bool direction)
         {
             currentWeapon.Visible = false;
-
             var weaponIndex = currentWeapon.GetIndex();
-
             if (direction)
             {
                 weaponIndex = currentWeapon.GetIndex() + 1;
-
                 if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
                 {
                     weaponIndex = 0;
@@ -135,7 +132,6 @@ namespace FPS
             else
             {
                 weaponIndex = currentWeapon.GetIndex() - 1;
-
                 if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
                 {
                     weaponIndex = GetChildCount() - 1;
@@ -143,7 +139,6 @@ namespace FPS
             }
             currentWeapon = GetChild<Weapon>(weaponIndex);
             UpdateArmatureIK();
-            currentWeapon.ads(false);
             Position = defaultPosition;
             currentWeapon.Visible = true;
         }
