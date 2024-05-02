@@ -33,7 +33,7 @@ namespace ThreeDLib
 		public override void _PhysicsProcess(double delta)
 		{
 			currentState = GetState();
-			if (upperBody.weaponHolder.currentWeapon.isScopedIn())
+			if (upperBody.weaponHolder.currentWeapon.isScopedIn() && currentState != State.InAir)
 			{
 				currentState = State.ADSing;
 			}
