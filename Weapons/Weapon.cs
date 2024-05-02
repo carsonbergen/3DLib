@@ -21,6 +21,8 @@ namespace ThreeDLib
         [ExportCategory("Animation Settings")]
         [Export]
         public float defaultZPosition;
+        [Export]
+        public float weight = 5f;
 
         [ExportCategory("Gun Data")]
         [Export]
