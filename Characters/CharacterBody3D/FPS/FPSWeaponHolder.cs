@@ -55,31 +55,11 @@ namespace FPS
             {
                 if (Input.IsActionJustPressed("next_weapon"))
                 {
-                    currentWeapon.Visible = false;
-                    var weaponIndex = currentWeapon.GetIndex() + 1;
-
-                    if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
-                    {
-                        weaponIndex = 0;
-                    }
-
-                    currentWeapon = GetChild<Weapon>(weaponIndex);
-                    currentWeapon.Visible = true;
-                    UpdateArmatureIK();
+                    SwitchWeapon(true);
                 }
                 else if (Input.IsActionJustPressed("previous_weapon"))
                 {
-                    currentWeapon.Visible = false;
-                    var weaponIndex = currentWeapon.GetIndex() - 1;
-
-                    if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
-                    {
-                        weaponIndex = GetChildCount() - 1;
-                    }
-
-                    currentWeapon = GetChild<Weapon>(weaponIndex);
-                    currentWeapon.Visible = true;
-                    UpdateArmatureIK();
+                    SwitchWeapon(false);
                 }
                 else if (Input.IsActionJustPressed("reload_weapon"))
                 {
@@ -109,7 +89,7 @@ namespace FPS
                 }
             }
 
-            if (Input.IsActionPressed("ads"))
+            if (currentWeapon.isScopedIn())
             {
                 Position = Position with
                 {
@@ -135,6 +115,37 @@ namespace FPS
                 Sway(delta);
             else
                 RotationDegrees = RotationDegrees.Lerp(Vector3.Zero, (float)(swayResetSpeed * delta));
+        }
+
+        public void SwitchWeapon(bool direction)
+        {
+            currentWeapon.Visible = false;
+
+            var weaponIndex = currentWeapon.GetIndex();
+
+            if (direction)
+            {
+                weaponIndex = currentWeapon.GetIndex() + 1;
+
+                if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
+                {
+                    weaponIndex = 0;
+                }
+            }
+            else
+            {
+                weaponIndex = currentWeapon.GetIndex() - 1;
+
+                if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
+                {
+                    weaponIndex = GetChildCount() - 1;
+                }
+            }
+            currentWeapon = GetChild<Weapon>(weaponIndex);
+            UpdateArmatureIK();
+            currentWeapon.ads(false);
+            Position = defaultPosition;
+            currentWeapon.Visible = true;
         }
 
         public void UpdateArmatureIK()

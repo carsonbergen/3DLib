@@ -109,6 +109,15 @@ namespace ThreeDLib
 
             if (Visible)
             {
+                if (Input.IsActionPressed("ads"))
+                {
+                    scopedIn = true;
+                }
+                else if (Input.IsActionJustReleased("ads"))
+                {
+                    scopedIn = false;
+                }
+
                 bulletRadius = accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z);
                 crosshair.adjustSpread(bulletRadius);
 
@@ -125,6 +134,10 @@ namespace ThreeDLib
                 {
                     accuracy = hipFireAccuracy;
                 }
+            }
+            else
+            {
+                scopedIn = false;
             }
         }
 
