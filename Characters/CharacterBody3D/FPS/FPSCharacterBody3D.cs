@@ -79,11 +79,11 @@ namespace ThreeDLib
 			}
 
 			if (currentState == State.Walking)
-				speed = walkSpeed;
+				speed = Mathf.Lerp(speed, walkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Sprinting)
-				speed = sprintSpeed;
+				speed = Mathf.Lerp(speed, sprintSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.ADSing)
-				speed = adsWalkSpeed;
+				speed = Mathf.Lerp(speed, adsWalkSpeed, (float)delta * speedChangeFactor);
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 
