@@ -44,9 +44,13 @@ namespace ThreeDLib
         [Export]
         public float adsSpeed = 1f;
         [Export]
+        public float baseSpread = 10f;
+        [Export]
         public float adsAccuracy = 2.5f;
         [Export]
-        public float hipFireAccuracy = 5;
+        public float hipFireAccuracy = 5f;
+        [Export]
+        public float recoilFactor = 1f;
 
         [Export]
         public Godot.Collections.Array<Damager> damagers { get; set; }
@@ -85,7 +89,7 @@ namespace ThreeDLib
 
         public override void _Ready()
         {
-            accuracy = hipFireAccuracy;
+            accuracy = baseSpread + hipFireAccuracy;
             if (pivot == null)
             {
                 pivot = GetChild<Node3D>(0);
@@ -124,7 +128,7 @@ namespace ThreeDLib
                     ads(scopedIn);
                 }
 
-                bulletRadius = accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z);
+                bulletRadius = (scopedIn ? 0 : baseSpread) + accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z * recoilFactor);
                 crosshair.adjustSpread(bulletRadius);
 
                 if (currentTime > recoilResetRate)
@@ -138,7 +142,7 @@ namespace ThreeDLib
                 }
                 else
                 {
-                    accuracy = hipFireAccuracy;
+                    accuracy = baseSpread + hipFireAccuracy;
                 }
             }
             else
