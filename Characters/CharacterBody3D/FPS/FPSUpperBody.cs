@@ -7,6 +7,10 @@ namespace FPS
     {
         [Export]
         public FPSCharacterBody3D player;
+        [Export]
+        public Node3D model;
+        [Export]
+        public Camera3D camera;
 
         [Export]
         public FPSWeaponHolder weaponHolder;

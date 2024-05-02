@@ -40,6 +40,8 @@ namespace ThreeDLib
         [Export]
         public bool hasScope = false;
         [Export]
+        public int zoom = 1;
+        [Export]
         public float adsSpeed = 1f;
         [Export]
         public float adsAccuracy = 2.5f;
@@ -114,10 +116,12 @@ namespace ThreeDLib
                 if (Input.IsActionPressed("ads"))
                 {
                     scopedIn = true;
+                    ads(scopedIn);
                 }
                 else if (Input.IsActionJustReleased("ads"))
                 {
                     scopedIn = false;
+                    ads(scopedIn);
                 }
 
                 bulletRadius = accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z);
@@ -145,10 +149,17 @@ namespace ThreeDLib
 
         public void ads(bool input)
         {
-            scopedIn = input;
             if (hasScope)
             {
                 // Handle logic for when there is a scope
+                if (scopedIn)
+                {
+                    pivot.Visible = false;
+                }
+                else 
+                {
+                    pivot.Visible = true;
+                }
             }
             else
             {

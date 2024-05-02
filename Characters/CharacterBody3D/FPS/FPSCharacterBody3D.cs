@@ -8,7 +8,11 @@ namespace ThreeDLib
 	{
 		// TODO: load from config file
 		[Export]
-		public float mouseSensitivity = 0.5f;
+		public float lookSensitivity = 0.5f;
+		[Export]
+		public float adsSensitivity = 0.25f;
+		[Export]
+		public int fov = 110;
 
 		// Holds the camera
 		[Export]
@@ -23,9 +27,12 @@ namespace ThreeDLib
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
+		
+		private float mouseSensitivity = 0f; 
 
 		public override void _Ready()
 		{
+			mouseSensitivity = lookSensitivity;
 			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
@@ -37,6 +44,16 @@ namespace ThreeDLib
 			{
 				currentState = State.ADSing;
 			}
+
+			if (currentState == State.ADSing)
+			{
+				mouseSensitivity = adsSensitivity;
+			}
+			else
+			{
+				mouseSensitivity = lookSensitivity;
+			}
+
 			if (isControlled && currentState != State.InVehicle)
 				Velocity = CalculateMovement(delta);
 			MoveAndSlide();

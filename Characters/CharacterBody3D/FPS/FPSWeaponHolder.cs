@@ -8,6 +8,8 @@ namespace FPS
     {
         [Export]
         public ArmatureIK armatureIK;
+        [Export]
+        public FPSUpperBody upperBody;
 
         [Export]
         public int maxWeapons = 2;
@@ -91,19 +93,24 @@ namespace FPS
 
             if (currentWeapon.isScopedIn())
             {
+                if (currentWeapon.hasScope)
+                {
+                    upperBody.model.Visible = false;
+                    upperBody.camera.Fov = currentWeapon.zoom;
+                }
                 Position = Position with
                 {
                     X = (float)Mathf.Lerp(Position.X, 0, delta * currentWeapon.adsSpeed)
                 };
-                currentWeapon.ads(true);
             }
             else
             {
+                upperBody.model.Visible = true;
+                upperBody.camera.Fov = upperBody.player.fov;
                 Position = Position with
                 {
                     X = (float)Mathf.Lerp(Position.X, defaultPosition.X, delta * currentWeapon.adsSpeed)
                 };
-                currentWeapon.ads(false);
             }
         }
 
