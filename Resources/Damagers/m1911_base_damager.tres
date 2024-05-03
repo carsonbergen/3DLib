@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="Damager" load_steps=2 format=3 uid="uid://dgmoi2r4kgdir"]
-
-[ext_resource type="Script" path="res://src/libs/3DLib/Weapons/Damager.cs" id="1_0ccok"]
-
-[resource]
-script = ExtResource("1_0ccok")
-damage = 15.0
