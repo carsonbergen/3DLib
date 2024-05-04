@@ -54,6 +54,8 @@ namespace ThreeDLib
         public float hipFireAccuracy = 5f;
         [Export]
         public float recoilFactor = 1f;
+        [Export]
+        public float reloadSpeed = 1f;
 
         [Export]
         public Godot.Collections.Array<Damager> damagers { get; set; }
@@ -83,6 +85,8 @@ namespace ThreeDLib
         private int currentAmmoInMagazine = 0;
 
         private Tween tween;
+
+        private Tween reloadTween;
 
         private float currentTime = 0;
 
@@ -125,6 +129,15 @@ namespace ThreeDLib
 
             if (Visible)
             {
+                if (reloadTween != null)
+                {
+                    if (!reloadTween.IsValid()) reloadTween = null;
+                    else if (reloadTween.IsValid())
+                    {
+                        if (!reloadTween.IsRunning()) reloadTween.Play();
+                    }
+                }
+
                 if (Input.IsActionPressed("ads"))
                 {
                     scopedIn = true;
@@ -172,6 +185,7 @@ namespace ThreeDLib
             }
             else
             {
+                if (reloadTween != null && reloadTween.IsRunning()) reloadTween.Pause();
                 scopedIn = false;
             }
         }
@@ -207,7 +221,7 @@ namespace ThreeDLib
 
         public void shoot()
         {
-            if (currentTime > fireRate)
+            if (currentTime > fireRate && reloadTween == null)
             {
                 if (currentAmmoInMagazine > 0 || magazineSize == -1)
                 {
@@ -243,7 +257,25 @@ namespace ThreeDLib
 
         public void reload()
         {
-            currentAmmoInMagazine = magazineSize;
+            if (reloadTween == null)
+            {
+                reloadAnimation();
+                currentAmmoInMagazine = magazineSize;
+            }
+            reloadTween.Finished += () => reloadTween = null;
+        }
+
+        public void reloadAnimation()
+        {
+            if (reloadTween != null)
+            {
+                reloadTween.Kill();
+                reloadTween = null;
+            }
+
+            reloadTween = CreateTween().BindNode(this).SetTrans(Tween.TransitionType.Sine).SetParallel();
+            reloadTween.TweenProperty(this, "position:y", Position.Y - 1, reloadSpeed);
+            reloadTween.Chain().TweenProperty(this, "position:y", 0, reloadSpeed);
         }
 
         public void shootAnimation()

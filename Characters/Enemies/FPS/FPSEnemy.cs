@@ -15,10 +15,9 @@ namespace FPS
 		{
 			foreach (FPSDamager damager in damagers)
 			{
-				// GD.Print("damager: ", damager);
-				GD.Print(this, "'s health before:\t", health);
-				damager.damageBehaviour(this, area == headArea);
-				GD.Print(this, "'s health after:\t", health, "\n");
+				// GD.Print(this, "'s health before:\t", health);
+				damager.damageBehaviour(this, area.Equals(headArea));
+				// GD.Print(this, "'s health after:\t", health, "\n");
 			}
 
 			if (health <= 0)
