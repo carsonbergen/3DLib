@@ -145,50 +145,52 @@ namespace ThreeDLib
                         if (!reloadTween.IsRunning()) reloadTween.Play();
                     }
                 }
-
-                if (Input.IsActionPressed("ads"))
-                {
-                    scopedIn = true;
-                    ads(scopedIn);
-                }
-                else if (Input.IsActionJustReleased("ads"))
-                {
-                    scopedIn = false;
-                    ads(scopedIn);
-                }
-
-                bulletRadius = (scopedIn ? 0 : baseSpread) + accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z * recoilFactor);
-                crosshair.adjustSpread(bulletRadius);
-
-                // Reset back to default
-                if (currentTime > recoilResetRate)
-                {
-                    bulletRaycast.TargetPosition = new Vector3(0, 0, -range);
-                }
-
-                if (scopedIn)
-                {
-                    accuracy = Mathf.MoveToward(
-                        accuracy,
-                        adsAccuracy,
-                        (float)delta * adsSpeed * 100
-                    );
-                    if (fullyScopedIn())
-                    {
-                        if (scopeLayer != null)
-                            scopeLayer.Visible = true;
-                        if (hasScope)
-                        {
-                            crosshair.tempAdjustLength(scopeReticleLength);
-                            crosshair.tempTShape();
-                        }
-                    }
-                }
                 else
                 {
-                    if (scopeLayer != null)
-                        scopeLayer.Visible = false;
-                    accuracy = baseSpread + hipFireAccuracy;
+                    if (Input.IsActionPressed("ads"))
+                    {
+                        scopedIn = true;
+                        ads(scopedIn);
+                    }
+                    else if (Input.IsActionJustReleased("ads"))
+                    {
+                        scopedIn = false;
+                        ads(scopedIn);
+                    }
+
+                    bulletRadius = (scopedIn ? 0 : baseSpread) + accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z * recoilFactor);
+                    crosshair.adjustSpread(bulletRadius);
+
+                    // Reset back to default
+                    if (currentTime > recoilResetRate)
+                    {
+                        bulletRaycast.TargetPosition = new Vector3(0, 0, -range);
+                    }
+
+                    if (scopedIn)
+                    {
+                        accuracy = Mathf.MoveToward(
+                            accuracy,
+                            adsAccuracy,
+                            (float)delta * adsSpeed * 100
+                        );
+                        if (fullyScopedIn())
+                        {
+                            if (scopeLayer != null)
+                                scopeLayer.Visible = true;
+                            if (hasScope)
+                            {
+                                crosshair.tempAdjustLength(scopeReticleLength);
+                                crosshair.tempTShape();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (scopeLayer != null)
+                            scopeLayer.Visible = false;
+                        accuracy = baseSpread + hipFireAccuracy;
+                    }
                 }
             }
             else

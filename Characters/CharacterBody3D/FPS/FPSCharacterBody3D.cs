@@ -42,14 +42,17 @@ namespace ThreeDLib
 		public override void _PhysicsProcess(double delta)
 		{
 			currentState = GetState();
-			if (upperBody.isCrouching())
+			if (currentState != State.InAir)
 			{
-				currentState = State.Crouching;
-			}
+				if (upperBody.isCrouching())
+				{
+					currentState = State.Crouching;
+				}
 
-			if (upperBody.weaponHolder.currentWeapon.isScopedIn() && currentState != State.InAir)
-			{
-				currentState = State.ADSing;
+				if (upperBody.weaponHolder.currentWeapon.isScopedIn())
+				{
+					currentState = State.ADSing;
+				}
 			}
 
 			if (currentState == State.ADSing)
