@@ -149,7 +149,10 @@ namespace ThreeDLib
                     if (scopeLayer != null)
                         scopeLayer.Visible = true;
                     if (hasScope)
+                    {
                         crosshair.tempAdjustLength(scopeReticleLength);
+                        crosshair.tempTShape();
+                    }
                 }
                 else
                 {

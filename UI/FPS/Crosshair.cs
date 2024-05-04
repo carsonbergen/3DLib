@@ -11,6 +11,8 @@ public partial class Crosshair : CenterContainer
 	public Line2D topLine;
 	[Export]
 	public Line2D bottomLine;
+	[Export]
+	public bool tShape = false;
 
 	[Export]
 	public float spread = 5;
@@ -21,6 +23,10 @@ public partial class Crosshair : CenterContainer
 	{
 		adjustSpread(spread);
 		adjustLength(length);
+		if (tShape)
+		{
+			topLine.Visible = false;
+		}
 	}
 
 	public void adjustSpread(float newSpread)
@@ -38,6 +44,16 @@ public partial class Crosshair : CenterContainer
 		// Set up bottom line
 		bottomLine.SetPointPosition(0, new Vector2(0, newSpread));
 		bottomLine.SetPointPosition(1, new Vector2(0, newSpread + length));
+	}
+
+	public void tempTShape() {
+		topLine.SetPointPosition(0, new Vector2(0, -spread));
+		topLine.SetPointPosition(1, new Vector2(0, -spread));
+	}
+
+	public void adjustTShape(bool input)
+	{
+		tShape = input;
 	}
 
 	public void tempAdjustLength(float tempLength)
