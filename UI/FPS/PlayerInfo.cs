@@ -8,9 +8,11 @@ namespace FPS
 		[Export]
 		public FPSWeaponHolder weaponHolder;
 		[Export]
-		public RichTextLabel ammoCounter;
+		public Label ammoInMagazineLabel;
 		[Export]
-		public RichTextLabel weaponLabel;
+		public Label ammoLeftLabel;
+		[Export]
+		public Label weaponLabel;
 
 		[Export]
 		public Label reloadWarning;
@@ -18,8 +20,10 @@ namespace FPS
 		public override void _Process(double delta)
 		{
 			int currentAmmo = weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
+			int currentAmmoLeft = weaponHolder.currentWeapon.getTotalAmmoLeft();
 			// Ammo counter logic
-			ammoCounter.Text = currentAmmo.ToString();
+			ammoInMagazineLabel.Text = currentAmmo.ToString();
+			ammoLeftLabel.Text = currentAmmoLeft.ToString();
 			weaponLabel.Text = weaponHolder.currentWeapon.name;
 			
 			// Reload message

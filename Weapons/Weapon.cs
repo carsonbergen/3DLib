@@ -35,6 +35,8 @@ namespace ThreeDLib
         [Export]
         public int magazineSize = 0;
         [Export]
+        public int totalAmmo = 0;
+        [Export]
         public float range = 1000f;
         [Export]
         public float recoilResetRate = 0.1f;
@@ -84,6 +86,8 @@ namespace ThreeDLib
 
         private int currentAmmoInMagazine = 0;
 
+        private int totalAmmoLeft = 0;
+
         private Tween tween;
 
         private Tween reloadTween;
@@ -111,6 +115,7 @@ namespace ThreeDLib
                 Z = defaultZPosition
             };
             currentAmmoInMagazine = magazineSize;
+            totalAmmoLeft = totalAmmo;
         }
 
         public override void _Process(double delta)
@@ -260,10 +265,21 @@ namespace ThreeDLib
 
         public void reload()
         {
-            if (reloadTween == null && currentAmmoInMagazine < magazineSize)
+            if (reloadTween == null && currentAmmoInMagazine < magazineSize && totalAmmoLeft > 0)
             {
                 reloadAnimation();
-                currentAmmoInMagazine = magazineSize;
+                int ammoToAdd = 0;
+
+                if (magazineSize > totalAmmoLeft)
+                {
+                    ammoToAdd = totalAmmoLeft;
+                }
+                else
+                {
+                    ammoToAdd = magazineSize - currentAmmoInMagazine;
+                }
+                currentAmmoInMagazine += ammoToAdd;
+                totalAmmoLeft -= ammoToAdd;
                 reloadTween.Finished += () => reloadTween = null;
             }
         }
@@ -309,6 +325,11 @@ namespace ThreeDLib
         public int getCurrentAmmoInMagazine()
         {
             return currentAmmoInMagazine;
+        }
+
+        public int getTotalAmmoLeft()
+        {
+            return totalAmmoLeft;
         }
     }
 }
