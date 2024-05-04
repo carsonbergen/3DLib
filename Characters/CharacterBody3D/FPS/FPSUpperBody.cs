@@ -37,9 +37,10 @@ namespace FPS
 
         private Tween tween;
 
+        private bool crouching = false;
+
         public override void _Ready()
         {
-            base._Ready();
             if (weaponHolder == null || player == null)
             {
                 GD.PrintErr("No player provided to UpperBody node.");
@@ -51,6 +52,7 @@ namespace FPS
         {
             if (Input.IsActionPressed("crouch"))
             {
+                crouching = true;
                 Position = Position with
                 {
                     Y = (float)Mathf.Lerp(Position.Y, crouchingY, delta * crouchingSpeed)
@@ -58,6 +60,7 @@ namespace FPS
             }
             else
             {
+                crouching = false;
                 Position = Position with
                 {
                     Y = (float)Mathf.Lerp(Position.Y, standingY, delta * crouchingSpeed)
@@ -79,6 +82,11 @@ namespace FPS
             {
                 tween = null;
             }
+        }
+
+        public bool isCrouching()
+        {
+            return crouching;
         }
 
         public void MovementAnimation(float speed)

@@ -23,12 +23,14 @@ namespace ThreeDLib
 		[Export]
 		public float adsWalkSpeed = 2.5f;
 		[Export]
+		public float crouchSpeed = 3f;
+		[Export]
 		public float inAirMovementFactor = 0.5f;
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
-		
-		private float mouseSensitivity = 0f; 
+
+		private float mouseSensitivity = 0f;
 
 		public override void _Ready()
 		{
@@ -40,6 +42,11 @@ namespace ThreeDLib
 		public override void _PhysicsProcess(double delta)
 		{
 			currentState = GetState();
+			if (upperBody.isCrouching())
+			{
+				currentState = State.Crouching;
+			}
+
 			if (upperBody.weaponHolder.currentWeapon.isScopedIn() && currentState != State.InAir)
 			{
 				currentState = State.ADSing;
@@ -101,6 +108,8 @@ namespace ThreeDLib
 				speed = Mathf.Lerp(speed, sprintSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.ADSing)
 				speed = Mathf.Lerp(speed, adsWalkSpeed, (float)delta * speedChangeFactor);
+			else if (currentState == State.Crouching)
+				speed = Mathf.Lerp(speed, crouchSpeed, (float)delta * speedChangeFactor);
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 
