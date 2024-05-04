@@ -74,6 +74,8 @@ namespace ThreeDLib
         [ExportCategory("Other Internal Nodes")]
         [Export]
         public Node3D pivot;
+        [Export]
+        public CanvasLayer scopeLayer;
 
         private int currentAmmoInMagazine = 0;
 
@@ -139,9 +141,13 @@ namespace ThreeDLib
                 if (scopedIn)
                 {
                     accuracy = adsAccuracy;
+                    if (scopeLayer != null)
+                        scopeLayer.Visible = true;
                 }
                 else
                 {
+                    if (scopeLayer != null)
+                        scopeLayer.Visible = false;
                     accuracy = baseSpread + hipFireAccuracy;
                 }
             }
