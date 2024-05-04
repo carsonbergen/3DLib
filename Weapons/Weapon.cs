@@ -260,7 +260,7 @@ namespace ThreeDLib
 
         public void reload()
         {
-            if (reloadTween == null)
+            if (reloadTween == null && currentAmmoInMagazine < magazineSize)
             {
                 reloadAnimation();
                 currentAmmoInMagazine = magazineSize;
