@@ -11,6 +11,12 @@ namespace FPS
         public Node3D model;
         [Export]
         public Camera3D camera;
+        [Export]
+        public float standingY = 0f;
+        [Export]
+        public float crouchingY = 0f;
+        [Export]
+        public float crouchingSpeed = 5f;
 
         [Export]
         public FPSWeaponHolder weaponHolder;
@@ -28,6 +34,7 @@ namespace FPS
         public float upY = -0.325f;
         [Export]
         public float downY = -0.4f;
+
         private Tween tween;
 
         public override void _Ready()
@@ -37,6 +44,24 @@ namespace FPS
             {
                 GD.PrintErr("No player provided to UpperBody node.");
                 GetTree().Quit();
+            }
+        }
+
+        public override void _PhysicsProcess(double delta)
+        {
+            if (Input.IsActionPressed("crouch"))
+            {
+                Position = Position with
+                {
+                    Y = (float)Mathf.Lerp(Position.Y, crouchingY, delta * crouchingSpeed)
+                };
+            }
+            else
+            {
+                Position = Position with
+                {
+                    Y = (float)Mathf.Lerp(Position.Y, standingY, delta * crouchingSpeed)
+                };
             }
         }
 
