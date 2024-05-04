@@ -8,7 +8,11 @@ namespace ThreeDLib
 	{
 		// TODO: load from config file
 		[Export]
-		public float mouseSensitivity = 0.5f;
+		public float lookSensitivity = 0.5f;
+		[Export]
+		public float adsSensitivity = 0.25f;
+		[Export]
+		public int fov = 110;
 
 		// Holds the camera
 		[Export]
@@ -23,9 +27,12 @@ namespace ThreeDLib
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
+		
+		private float mouseSensitivity = 0f; 
 
 		public override void _Ready()
 		{
+			mouseSensitivity = lookSensitivity;
 			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
@@ -33,10 +40,20 @@ namespace ThreeDLib
 		public override void _PhysicsProcess(double delta)
 		{
 			currentState = GetState();
-			if (upperBody.weaponHolder.currentWeapon.isScopedIn())
+			if (upperBody.weaponHolder.currentWeapon.isScopedIn() && currentState != State.InAir)
 			{
 				currentState = State.ADSing;
 			}
+
+			if (currentState == State.ADSing)
+			{
+				mouseSensitivity = adsSensitivity;
+			}
+			else
+			{
+				mouseSensitivity = lookSensitivity;
+			}
+
 			if (isControlled && currentState != State.InVehicle)
 				Velocity = CalculateMovement(delta);
 			MoveAndSlide();
@@ -79,11 +96,11 @@ namespace ThreeDLib
 			}
 
 			if (currentState == State.Walking)
-				speed = walkSpeed;
+				speed = Mathf.Lerp(speed, walkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Sprinting)
-				speed = sprintSpeed;
+				speed = Mathf.Lerp(speed, sprintSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.ADSing)
-				speed = adsWalkSpeed;
+				speed = Mathf.Lerp(speed, adsWalkSpeed, (float)delta * speedChangeFactor);
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 

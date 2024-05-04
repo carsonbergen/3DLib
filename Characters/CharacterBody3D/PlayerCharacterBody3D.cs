@@ -22,6 +22,8 @@ namespace ThreeDLib
         [Export]
         public float jumpVelocity = 4.5f;
         [Export]
+        public float speedChangeFactor = 10f;
+        [Export]
         public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
         // All of the nodes to be set when modifying a player scene

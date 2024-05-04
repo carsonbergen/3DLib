@@ -7,6 +7,10 @@ namespace FPS
     {
         [Export]
         public FPSCharacterBody3D player;
+        [Export]
+        public Node3D model;
+        [Export]
+        public Camera3D camera;
 
         [Export]
         public FPSWeaponHolder weaponHolder;
@@ -64,6 +68,5 @@ namespace FPS
             tween.Chain().TweenProperty(weaponHolder, "position:y", downY, speed).SetTrans(Tween.TransitionType.Bounce);
             tween.Chain().TweenProperty(weaponHolder, "position:y", defaultY, speed);
         }
-
     }
 }

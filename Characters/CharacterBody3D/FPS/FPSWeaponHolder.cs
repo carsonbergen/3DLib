@@ -8,6 +8,8 @@ namespace FPS
     {
         [Export]
         public ArmatureIK armatureIK;
+        [Export]
+        public FPSUpperBody upperBody;
 
         [Export]
         public int maxWeapons = 2;
@@ -55,31 +57,11 @@ namespace FPS
             {
                 if (Input.IsActionJustPressed("next_weapon"))
                 {
-                    currentWeapon.Visible = false;
-                    var weaponIndex = currentWeapon.GetIndex() + 1;
-
-                    if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
-                    {
-                        weaponIndex = 0;
-                    }
-
-                    currentWeapon = GetChild<Weapon>(weaponIndex);
-                    currentWeapon.Visible = true;
-                    UpdateArmatureIK();
+                    SwitchWeapon(true);
                 }
                 else if (Input.IsActionJustPressed("previous_weapon"))
                 {
-                    currentWeapon.Visible = false;
-                    var weaponIndex = currentWeapon.GetIndex() - 1;
-
-                    if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
-                    {
-                        weaponIndex = GetChildCount() - 1;
-                    }
-
-                    currentWeapon = GetChild<Weapon>(weaponIndex);
-                    currentWeapon.Visible = true;
-                    UpdateArmatureIK();
+                    SwitchWeapon(false);
                 }
                 else if (Input.IsActionJustPressed("reload_weapon"))
                 {
@@ -109,21 +91,26 @@ namespace FPS
                 }
             }
 
-            if (Input.IsActionPressed("ads"))
+            if (currentWeapon.isScopedIn())
             {
+                if (currentWeapon.hasScope)
+                {
+                    upperBody.model.Visible = false;
+                    upperBody.camera.Fov = currentWeapon.zoom;
+                }
                 Position = Position with
                 {
                     X = (float)Mathf.Lerp(Position.X, 0, delta * currentWeapon.adsSpeed)
                 };
-                currentWeapon.ads(true);
             }
             else
             {
+                upperBody.model.Visible = true;
+                upperBody.camera.Fov = upperBody.player.fov;
                 Position = Position with
                 {
                     X = (float)Mathf.Lerp(Position.X, defaultPosition.X, delta * currentWeapon.adsSpeed)
                 };
-                currentWeapon.ads(false);
             }
         }
 
@@ -137,6 +124,32 @@ namespace FPS
                 RotationDegrees = RotationDegrees.Lerp(Vector3.Zero, (float)(swayResetSpeed * delta));
         }
 
+        public void SwitchWeapon(bool direction)
+        {
+            currentWeapon.Visible = false;
+            var weaponIndex = currentWeapon.GetIndex();
+            if (direction)
+            {
+                weaponIndex = currentWeapon.GetIndex() + 1;
+                if (weaponIndex > (maxWeapons - 1) || weaponIndex > (GetChildCount() - 1))
+                {
+                    weaponIndex = 0;
+                }
+            }
+            else
+            {
+                weaponIndex = currentWeapon.GetIndex() - 1;
+                if ((weaponIndex < 0) || weaponIndex > (GetChildCount() - 1))
+                {
+                    weaponIndex = GetChildCount() - 1;
+                }
+            }
+            currentWeapon = GetChild<Weapon>(weaponIndex);
+            UpdateArmatureIK();
+            Position = defaultPosition;
+            currentWeapon.Visible = true;
+        }
+
         public void UpdateArmatureIK()
         {
             armatureIK.leftArmTarget = currentWeapon.leftArmTarget;
@@ -148,8 +161,7 @@ namespace FPS
         {
             if (GetChildCount() > 0)
             {
-                // float weight = (float)GetChild<Node3D>(currentWeapon).GetMeta("weight");
-                float weight = 5f;
+                float weight = currentWeapon.weight;
                 RotationDegrees = RotationDegrees with
                 {
                     X = Mathf.Lerp(

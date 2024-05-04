@@ -21,6 +21,8 @@ namespace ThreeDLib
         [ExportCategory("Animation Settings")]
         [Export]
         public float defaultZPosition;
+        [Export]
+        public float weight = 5f;
 
         [ExportCategory("Gun Data")]
         [Export]
@@ -38,11 +40,17 @@ namespace ThreeDLib
         [Export]
         public bool hasScope = false;
         [Export]
+        public int zoom = 1;
+        [Export]
         public float adsSpeed = 1f;
+        [Export]
+        public float baseSpread = 10f;
         [Export]
         public float adsAccuracy = 2.5f;
         [Export]
-        public float hipFireAccuracy = 5;
+        public float hipFireAccuracy = 5f;
+        [Export]
+        public float recoilFactor = 1f;
 
         [Export]
         public Godot.Collections.Array<Damager> damagers { get; set; }
@@ -83,7 +91,7 @@ namespace ThreeDLib
 
         public override void _Ready()
         {
-            accuracy = hipFireAccuracy;
+            accuracy = baseSpread + hipFireAccuracy;
             if (pivot == null)
             {
                 pivot = GetChild<Node3D>(0);
@@ -111,7 +119,18 @@ namespace ThreeDLib
 
             if (Visible)
             {
-                bulletRadius = accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z);
+                if (Input.IsActionPressed("ads"))
+                {
+                    scopedIn = true;
+                    ads(scopedIn);
+                }
+                else if (Input.IsActionJustReleased("ads"))
+                {
+                    scopedIn = false;
+                    ads(scopedIn);
+                }
+
+                bulletRadius = (scopedIn ? 0 : baseSpread) + accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z * recoilFactor);
                 crosshair.adjustSpread(bulletRadius);
 
                 if (currentTime > recoilResetRate)
@@ -127,19 +146,30 @@ namespace ThreeDLib
                 }
                 else
                 {
-                    accuracy = hipFireAccuracy;
                     if (scopeLayer != null)
                         scopeLayer.Visible = false;
+                    accuracy = baseSpread + hipFireAccuracy;
                 }
+            }
+            else
+            {
+                scopedIn = false;
             }
         }
 
         public void ads(bool input)
         {
-            scopedIn = input;
             if (hasScope)
             {
                 // Handle logic for when there is a scope
+                if (scopedIn)
+                {
+                    pivot.Visible = false;
+                }
+                else 
+                {
+                    pivot.Visible = true;
+                }
             }
             else
             {
