@@ -138,6 +138,7 @@ namespace ThreeDLib
                 bulletRadius = (scopedIn ? 0 : baseSpread) + accuracy + (Position.Z * 100 * (recoil + accuracy) * Position.Z * recoilFactor);
                 crosshair.adjustSpread(bulletRadius);
 
+                // Reset back to default
                 if (currentTime > recoilResetRate)
                 {
                     bulletRaycast.TargetPosition = new Vector3(0, 0, -range);
@@ -145,13 +146,20 @@ namespace ThreeDLib
 
                 if (scopedIn)
                 {
-                    accuracy = adsAccuracy;
-                    if (scopeLayer != null)
-                        scopeLayer.Visible = true;
-                    if (hasScope)
+                    accuracy = Mathf.MoveToward(
+                        accuracy,
+                        adsAccuracy, 
+                        (float)delta * adsSpeed * 100
+                    );
+                    if (fullyScopedIn())
                     {
-                        crosshair.tempAdjustLength(scopeReticleLength);
-                        crosshair.tempTShape();
+                        if (scopeLayer != null)
+                            scopeLayer.Visible = true;
+                        if (hasScope)
+                        {
+                            crosshair.tempAdjustLength(scopeReticleLength);
+                            crosshair.tempTShape();
+                        }
                     }
                 }
                 else
@@ -169,7 +177,7 @@ namespace ThreeDLib
 
         public void ads(bool input)
         {
-            if (hasScope)
+            if (hasScope && fullyScopedIn())
             {
                 // Handle logic for when there is a scope
                 if (scopedIn)
@@ -184,6 +192,11 @@ namespace ThreeDLib
             else
             {
             }
+        }
+
+        public bool fullyScopedIn() 
+        {
+            return accuracy == adsAccuracy;
         }
 
         public bool isScopedIn()

@@ -93,7 +93,7 @@ namespace FPS
 
             if (currentWeapon.isScopedIn())
             {
-                if (currentWeapon.hasScope)
+                if (currentWeapon.hasScope && currentWeapon.fullyScopedIn())
                 {
                     upperBody.model.Visible = false;
                     upperBody.camera.Fov = currentWeapon.zoom;
