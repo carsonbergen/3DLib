@@ -115,15 +115,18 @@ namespace ThreeDLib
 
         public override void _Process(double delta)
         {
-            Position = Position with
+            if (reloadTween == null)
             {
-                Z = Mathf.Clamp(Position.Z, 0, maxZ)
-            };
+                Position = Position with
+                {
+                    Z = Mathf.Clamp(Position.Z, 0, maxZ)
+                };
 
-            RotationDegrees = RotationDegrees with
-            {
-                X = Mathf.Clamp(RotationDegrees.X, 0, maxXRotation)
-            };
+                RotationDegrees = RotationDegrees with
+                {
+                    X = Mathf.Clamp(RotationDegrees.X, 0, maxXRotation)
+                };
+            }
 
             currentTime += (float)delta;
 
@@ -261,12 +264,18 @@ namespace ThreeDLib
             {
                 reloadAnimation();
                 currentAmmoInMagazine = magazineSize;
+                reloadTween.Finished += () => reloadTween = null;
             }
-            reloadTween.Finished += () => reloadTween = null;
         }
 
         public void reloadAnimation()
         {
+            if (tween != null)
+            {
+                tween.Kill();
+                tween = null;
+            }
+
             if (reloadTween != null)
             {
                 reloadTween.Kill();
@@ -274,8 +283,10 @@ namespace ThreeDLib
             }
 
             reloadTween = CreateTween().BindNode(this).SetTrans(Tween.TransitionType.Sine).SetParallel();
-            reloadTween.TweenProperty(this, "position:y", Position.Y - 1, reloadSpeed);
-            reloadTween.Chain().TweenProperty(this, "position:y", 0, reloadSpeed);
+            reloadTween.TweenProperty(this, "position", Position + new Vector3(0f, -0.15f, 0.1f), reloadSpeed / 2);
+            reloadTween.TweenProperty(this, "rotation_degrees", RotationDegrees + new Vector3(35, 24, 25), reloadSpeed / 2);
+            reloadTween.Chain().TweenProperty(this, "rotation_degrees", Vector3.Zero, reloadSpeed);
+            reloadTween.Chain().TweenProperty(this, "position", Vector3.Zero, reloadSpeed);
         }
 
         public void shootAnimation()
