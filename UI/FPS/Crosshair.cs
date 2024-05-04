@@ -40,6 +40,21 @@ public partial class Crosshair : CenterContainer
 		bottomLine.SetPointPosition(1, new Vector2(0, newSpread + length));
 	}
 
+	public void tempAdjustLength(float tempLength)
+	{
+		leftLine.SetPointPosition(0, new Vector2(-spread, 0));
+		leftLine.SetPointPosition(1, new Vector2(-(spread + tempLength), 0));
+		// Set up right line
+		rightLine.SetPointPosition(0, new Vector2(spread, 0));
+		rightLine.SetPointPosition(1, new Vector2(spread + tempLength, 0));
+		// Set up top line
+		topLine.SetPointPosition(0, new Vector2(0, -spread));
+		topLine.SetPointPosition(1, new Vector2(0, -(spread + tempLength)));
+		// Set up bottom line
+		bottomLine.SetPointPosition(0, new Vector2(0, spread));
+		bottomLine.SetPointPosition(1, new Vector2(0, spread + tempLength));
+	}
+
 	public void adjustLength(float newLength)
 	{
 		length = newLength;

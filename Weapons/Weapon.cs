@@ -40,6 +40,8 @@ namespace ThreeDLib
         [Export]
         public bool hasScope = false;
         [Export]
+        public float scopeReticleLength = 100f;
+        [Export]
         public int zoom = 1;
         [Export]
         public float adsSpeed = 1f;
@@ -91,11 +93,14 @@ namespace ThreeDLib
 
         public override void _Ready()
         {
+            if (scopeLayer != null)
+                scopeLayer.Visible = false;
+
             accuracy = baseSpread + hipFireAccuracy;
+
             if (pivot == null)
-            {
                 pivot = GetChild<Node3D>(0);
-            }
+
             pivot.Position = pivot.Position with
             {
                 Z = defaultZPosition
@@ -143,6 +148,8 @@ namespace ThreeDLib
                     accuracy = adsAccuracy;
                     if (scopeLayer != null)
                         scopeLayer.Visible = true;
+                    if (hasScope)
+                        crosshair.tempAdjustLength(scopeReticleLength);
                 }
                 else
                 {
