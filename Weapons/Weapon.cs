@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using FPS;
 using Godot;
 
 namespace ThreeDLib
@@ -148,7 +149,7 @@ namespace ThreeDLib
                 {
                     accuracy = Mathf.MoveToward(
                         accuracy,
-                        adsAccuracy, 
+                        adsAccuracy,
                         (float)delta * adsSpeed * 100
                     );
                     if (fullyScopedIn())
@@ -184,7 +185,7 @@ namespace ThreeDLib
                 {
                     pivot.Visible = false;
                 }
-                else 
+                else
                 {
                     pivot.Visible = true;
                 }
@@ -194,7 +195,7 @@ namespace ThreeDLib
             }
         }
 
-        public bool fullyScopedIn() 
+        public bool fullyScopedIn()
         {
             return accuracy == adsAccuracy;
         }
@@ -224,10 +225,17 @@ namespace ThreeDLib
                     currentTime = 0;
 
                     var obj = bulletRaycast.GetCollider();
-                    // GD.Print(obj);
-                    if (obj is Enemy enemy)
+                    if (obj is FPSEnemy enemy)
                     {
                         enemy.applyDamagers(damagers);
+                    }
+                    else if (obj is Area3D area)
+                    {
+                        var parent = area.GetParent();
+                        if (parent is FPSEnemy)
+                        {
+                            ((FPSEnemy)parent).applyDamagers(damagers, area);
+                        }
                     }
                 }
             }

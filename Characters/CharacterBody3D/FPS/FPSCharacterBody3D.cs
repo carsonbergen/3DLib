@@ -131,7 +131,6 @@ namespace ThreeDLib
 				velocity.X = Mathf.MoveToward(Velocity.X, 0, speed);
 				velocity.Z = Mathf.MoveToward(Velocity.Z, 0, speed);
 			}
-
 			return velocity;
 		}
 	}
