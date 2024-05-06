@@ -197,6 +197,9 @@ namespace ThreeDLib
             {
                 if (reloadTween != null && reloadTween.IsRunning()) reloadTween.Pause();
                 scopedIn = false;
+                if (scopeLayer != null) scopeLayer.Visible = false;
+                pivot.Visible = true;
+                accuracy = hipFireAccuracy;
             }
         }
 
@@ -222,6 +225,11 @@ namespace ThreeDLib
         public bool fullyScopedIn()
         {
             return accuracy == adsAccuracy;
+        }
+
+        public void setScopedIn(bool value)
+        {
+            scopedIn = value;
         }
 
         public bool isScopedIn()

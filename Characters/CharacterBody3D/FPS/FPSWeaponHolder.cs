@@ -126,6 +126,11 @@ namespace FPS
 
         public void SwitchWeapon(bool direction)
         {
+            // Reset current weapon and upperbody
+            upperBody.model.Visible = true;
+            upperBody.camera.Fov = upperBody.player.fov;
+            Position = defaultPosition;
+            currentWeapon.setScopedIn(false);
             currentWeapon.Visible = false;
             var weaponIndex = currentWeapon.GetIndex();
             if (direction)
@@ -146,7 +151,7 @@ namespace FPS
             }
             currentWeapon = GetChild<Weapon>(weaponIndex);
             UpdateArmatureIK();
-            Position = defaultPosition;
+            currentWeapon.setScopedIn(false);
             currentWeapon.Visible = true;
         }
 
