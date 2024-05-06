@@ -93,6 +93,14 @@ namespace FPS
 
             if (currentWeapon.isScopedIn())
             {
+                upperBody.camera.Attributes.Set(
+                    "dof_blur_near_distance",
+                    Mathf.Lerp(
+                    (float)upperBody.camera.Attributes.Get("dof_blur_near_distance"),
+                    0.37,
+                    delta * 50
+                ));
+
                 if (currentWeapon.hasScope && currentWeapon.fullyScopedIn())
                 {
                     upperBody.model.Visible = false;
@@ -105,6 +113,14 @@ namespace FPS
             }
             else
             {
+                upperBody.camera.Attributes.Set(
+                    "dof_blur_near_distance",
+                    Mathf.Lerp(
+                    (float)upperBody.camera.Attributes.Get("dof_blur_near_distance"),
+                    0,
+                    delta * 50
+                ));
+                
                 upperBody.model.Visible = true;
                 upperBody.camera.Fov = upperBody.player.fov;
                 Position = Position with
