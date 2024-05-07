@@ -58,6 +58,8 @@ namespace ThreeDLib
         public float recoilFactor = 1f;
         [Export]
         public float reloadSpeed = 1f;
+        [Export]
+        public int enemyPassThrough = 3;
 
         [Export]
         public Godot.Collections.Array<Damager> damagers { get; set; }
@@ -243,6 +245,58 @@ namespace ThreeDLib
             {
                 if (currentAmmoInMagazine > 0 || magazineSize == -1)
                 {
+                    var collisionPoint = bulletRaycast.GetCollisionPoint();
+                    var spaceState = GetWorld3D().DirectSpaceState;
+                    var fromPoint = bulletRaycast.GlobalPosition;
+                    var toPoint = collisionPoint + (
+                        range / fromPoint.DistanceTo(collisionPoint)
+                    ) * (collisionPoint - fromPoint);
+
+                    var vertices = new Vector3[]
+{
+                        fromPoint,
+                        toPoint
+};
+
+                    // Initialize the ArrayMesh.
+                    var arrMesh = new ArrayMesh();
+                    var arrays = new Godot.Collections.Array();
+                    arrays.Resize((int)Mesh.ArrayType.Max);
+                    arrays[(int)Mesh.ArrayType.Vertex] = vertices;
+
+                    // Create the Mesh.
+                    arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Lines, arrays);
+                    var mesh = new MeshInstance3D
+                    {
+                        Mesh = arrMesh
+                    };
+                    GetTree().Root.AddChild(mesh);
+
+                    for (int i = 0; i < enemyPassThrough; i++)
+                    {
+                        var query = PhysicsRayQueryParameters3D.Create(fromPoint, toPoint);
+                        query.CollideWithAreas = true;
+                        query.CollideWithBodies = false;
+                        Godot.Collections.Dictionary result = spaceState.IntersectRay(query);
+                        result.TryGetValue("collider", out Variant collider);
+                        if (((Node3D)collider) != null)
+                        {
+                            if (((Node3D)collider).GlobalPosition == fromPoint)
+                                break;
+                            fromPoint = ((Node3D)collider).GlobalPosition;
+
+                            if (((Node3D)collider) is Area3D area)
+                            {
+                                var parent = area.GetParent();
+                                if (parent is FPSEnemy)
+                                {
+                                    ((FPSEnemy)parent).applyDamagers(damagers, area);
+                                }
+                            }
+                        }
+                        else break;
+                    }
+
                     shootAnimation();
 
                     GD.Randomize();
@@ -251,24 +305,8 @@ namespace ThreeDLib
                         X = (float)GD.RandRange(-bulletRadius, bulletRadius),
                         Y = (float)GD.RandRange(-bulletRadius, bulletRadius)
                     };
-
                     currentAmmoInMagazine -= 1;
-
                     currentTime = 0;
-
-                    var obj = bulletRaycast.GetCollider();
-                    if (obj is FPSEnemy enemy)
-                    {
-                        enemy.applyDamagers(damagers);
-                    }
-                    else if (obj is Area3D area)
-                    {
-                        var parent = area.GetParent();
-                        if (parent is FPSEnemy)
-                        {
-                            ((FPSEnemy)parent).applyDamagers(damagers, area);
-                        }
-                    }
                 }
             }
         }
