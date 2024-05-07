@@ -11,12 +11,12 @@ namespace FPS
 		[Export]
 		public Area3D bodyArea;
 
-		public void applyDamagers(Array<Damager> damagers, Area3D area)
+		public void applyDamagers(Array<Damager> damagers, Area3D area, int passThroughAmount)
 		{
 			foreach (FPSDamager damager in damagers)
 			{
 				// GD.Print(this, "'s health before:\t", health);
-				damager.damageBehaviour(this, area.Equals(headArea));
+				damager.damageBehaviour(this, area.Equals(headArea), passThroughAmount);
 				// GD.Print(this, "'s health after:\t", health, "\n");
 			}
 

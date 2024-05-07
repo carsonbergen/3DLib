@@ -288,9 +288,10 @@ namespace ThreeDLib
                             if (((Node3D)collider) is Area3D area)
                             {
                                 var parent = area.GetParent();
-                                if (parent is FPSEnemy)
+                                if (parent is FPSEnemy enemy)
                                 {
-                                    ((FPSEnemy)parent).applyDamagers(damagers, area);
+                                    GD.Print(area);
+                                    enemy.applyDamagers(damagers, area, i);
                                 }
                             }
                         }
