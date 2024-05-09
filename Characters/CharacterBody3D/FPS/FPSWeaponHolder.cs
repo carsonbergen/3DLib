@@ -122,7 +122,7 @@ namespace FPS
                 ));
                 
                 upperBody.model.Visible = true;
-                upperBody.camera.Fov = upperBody.player.fov;
+                upperBody.camera.Fov = upperBody.player.playerSettings.fov;
                 Position = Position with
                 {
                     X = (float)Mathf.Lerp(Position.X, defaultPosition.X, delta * currentWeapon.adsSpeed)
@@ -144,7 +144,7 @@ namespace FPS
         {
             // Reset current weapon and upperbody
             upperBody.model.Visible = true;
-            upperBody.camera.Fov = upperBody.player.fov;
+            upperBody.camera.Fov = upperBody.player.playerSettings.fov;
             Position = defaultPosition;
             currentWeapon.setScopedIn(false);
             currentWeapon.Visible = false;

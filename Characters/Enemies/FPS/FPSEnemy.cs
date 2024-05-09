@@ -16,6 +16,9 @@ namespace FPS
 			foreach (FPSDamager damager in damagers)
 			{
 				// GD.Print(this, "'s health before:\t", health);
+				// GD.Print("\nenemy: ", this);
+				// GD.Print("area: '", area, "'\t", area == headArea, "==\t headArea: '", headArea, "'");
+				// GD.Print("area: '", area, "'\t", area == bodyArea, "==\t bodyArea: '", bodyArea, "'");
 				damager.damageBehaviour(this, area.Equals(headArea), passThroughAmount);
 				// GD.Print(this, "'s health after:\t", health, "\n");
 			}

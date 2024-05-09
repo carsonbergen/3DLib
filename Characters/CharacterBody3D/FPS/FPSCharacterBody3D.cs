@@ -6,26 +6,12 @@ namespace ThreeDLib
 {
 	public partial class FPSCharacterBody3D : PlayerCharacterBody3D
 	{
-		// TODO: load from config file
 		[Export]
-		public float lookSensitivity = 0.5f;
-		[Export]
-		public float adsSensitivity = 0.25f;
-		[Export]
-		public int fov = 110;
+		public PlayerSettings playerSettings;
 
 		// Holds the camera
 		[Export]
 		public FPSUpperBody upperBody = null;
-
-		[Export]
-		public float jumpDistance = 1f;
-		[Export]
-		public float adsWalkSpeed = 2.5f;
-		[Export]
-		public float crouchSpeed = 3f;
-		[Export]
-		public float inAirMovementFactor = 0.5f;
 
 		private float movementFactor = 1f;
 		private Vector3 jumpDirection;
@@ -34,7 +20,7 @@ namespace ThreeDLib
 
 		public override void _Ready()
 		{
-			mouseSensitivity = lookSensitivity;
+			mouseSensitivity = playerSettings.lookSensitivity;
 			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
@@ -57,11 +43,11 @@ namespace ThreeDLib
 
 			if (currentState == State.ADSing)
 			{
-				mouseSensitivity = adsSensitivity;
+				mouseSensitivity = playerSettings.adsSensitivity;
 			}
 			else
 			{
-				mouseSensitivity = lookSensitivity;
+				mouseSensitivity = playerSettings.lookSensitivity;
 			}
 
 			if (isControlled && currentState != State.InVehicle)
@@ -106,13 +92,13 @@ namespace ThreeDLib
 			}
 
 			if (currentState == State.Walking)
-				speed = Mathf.Lerp(speed, walkSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerSettings.walkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Sprinting)
-				speed = Mathf.Lerp(speed, sprintSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerSettings.sprintSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.ADSing)
-				speed = Mathf.Lerp(speed, adsWalkSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerSettings.adsWalkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Crouching)
-				speed = Mathf.Lerp(speed, crouchSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerSettings.crouchSpeed, (float)delta * speedChangeFactor);
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 
@@ -130,8 +116,8 @@ namespace ThreeDLib
 
 			if (jumpDirection != Vector3.Zero)
 			{
-				velocity.X = (jumpDirection.X * speed * jumpDistance / 2) + (direction.X * speed * inAirMovementFactor);
-				velocity.Z = (jumpDirection.Z * speed * jumpDistance / 2) + (direction.Z * speed * inAirMovementFactor);
+				velocity.X = (jumpDirection.X * speed * playerSettings.jumpDistance / 2) + (direction.X * speed * playerSettings.inAirMovementFactor);
+				velocity.Z = (jumpDirection.Z * speed * playerSettings.jumpDistance / 2) + (direction.Z * speed * playerSettings.inAirMovementFactor);
 			}
 			else if (direction != Vector3.Zero)
 			{

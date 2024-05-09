@@ -15,9 +15,12 @@ namespace FPS
         public void damageBehaviour(Enemy enemy, bool criticalArea, int passThroughAmount) 
         {
             var damageToBeDone = damage - (float)(passThroughDamageReduction * passThroughAmount);
-            GD.Print("damage:", criticalArea ? (damageToBeDone * criticalAreaBonus) : damageToBeDone, "\t", passThroughAmount, "\t", criticalArea);
+            GD.Print(
+                "\ndamage:", criticalArea ? (damageToBeDone * criticalAreaBonus) : damageToBeDone, "\n",
+                "pass through amount:\t", passThroughAmount, "\n",
+                "critical area:\t", criticalArea); 
             enemy.health -= criticalArea ? (damageToBeDone * criticalAreaBonus) : damageToBeDone; 
-            // GD.Print("enemy health:\t", enemy.health);
+            GD.Print(enemy, "'s health:\t", enemy.health);
         }
 
         public FPSDamager() 

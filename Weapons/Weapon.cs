@@ -272,6 +272,8 @@ namespace ThreeDLib
                     };
                     GetTree().Root.AddChild(mesh);
 
+                    Node3D lastCollider = null;
+
                     for (int i = 0; i < enemyPassThrough; i++)
                     {
                         var query = PhysicsRayQueryParameters3D.Create(fromPoint, toPoint);
@@ -279,21 +281,21 @@ namespace ThreeDLib
                         query.CollideWithBodies = false;
                         Godot.Collections.Dictionary result = spaceState.IntersectRay(query);
                         result.TryGetValue("collider", out Variant collider);
+                        
                         if (((Node3D)collider) != null)
                         {
-                            if (((Node3D)collider).GlobalPosition == fromPoint)
-                                break;
-                            fromPoint = ((Node3D)collider).GlobalPosition;
-
                             if (((Node3D)collider) is Area3D area)
                             {
                                 var parent = area.GetParent();
                                 if (parent is FPSEnemy enemy)
                                 {
-                                    GD.Print(area);
+                                    if (lastCollider == ((Node3D)collider)) break;
+                                    
+                                    lastCollider = (Node3D)collider;
                                     enemy.applyDamagers(damagers, area, i);
                                 }
                             }
+                            fromPoint = ((Node3D)collider).GlobalPosition;
                         }
                         else break;
                     }
