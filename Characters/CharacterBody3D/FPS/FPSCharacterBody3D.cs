@@ -1,6 +1,7 @@
 using FPS;
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 namespace ThreeDLib
 {
@@ -20,6 +21,8 @@ namespace ThreeDLib
 
 		public override void _Ready()
 		{
+			Task<PlayerSettings> settings = loadSavedSettings();
+
 			mouseSensitivity = playerSettings.lookSensitivity;
 			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -75,6 +78,15 @@ namespace ThreeDLib
 						Input.MouseMode = Input.MouseModeEnum.Captured;
 				}
 			}
+		}
+
+		public static Task<PlayerSettings> loadSavedSettings()
+		{
+			var newConfig = new ConfigFile();
+			var err = newConfig.Load("player_settings.cfg");
+			
+
+			return null;
 		}
 
 		public override Vector3 CalculateMovement(double delta)
