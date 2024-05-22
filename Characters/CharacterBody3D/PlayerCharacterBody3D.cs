@@ -1,6 +1,9 @@
 using Godot;
 using Godot.Collections;
 
+/**
+    
+*/
 namespace ThreeDLib
 {
     public partial class PlayerCharacterBody3D : CharacterBody3D
