@@ -6,3 +6,6 @@ This is the FPS player controller and extends the PlayerCharacterBody3D controll
 
 ## FPSUpperBody
 This is the first in the chain of crucial FPS components. It modifies the arm model, and camera.
+
+## FPSWeaponHolder
+This is the last in the chain of crucial FPS components. It handles all weapon related logic.
