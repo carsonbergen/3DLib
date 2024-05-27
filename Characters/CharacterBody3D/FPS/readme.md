@@ -9,3 +9,6 @@ This is the first in the chain of crucial FPS components. It modifies the arm mo
 
 ## FPSWeaponHolder
 This is the last in the chain of crucial FPS components. It handles all weapon related logic.
+
+## PlayerSettings
+Godot resource for player settings.
