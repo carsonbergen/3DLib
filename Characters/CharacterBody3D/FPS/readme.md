@@ -12,3 +12,24 @@ This is the last in the chain of crucial FPS components. It handles all weapon r
 
 ## PlayerSettings
 Godot resource for player settings.
+- Look sensitivity: how fast the camera moves when not ADSed.
+- ADS sensitivity: how fast the camera moves when ADSed.
+- FOV: saved FOV setup for the player.
+- Jump distance: how far the player will jump forward.
+
+<!-- [Export]
+public float walkSpeed = 5f;
+[Export]
+public float sprintSpeed = 10f;
+[Export]
+public float adsWalkSpeed = 2.5f;
+[Export]
+public float crouchSpeed = 3f;
+[Export]
+public float jumpVelocity = 3f;
+[Export]
+public float speedChangeFactor = 10f;
+[Export]
+public float inAirMovementFactor = 0.5f;
+[Export]
+public float gravity = 9.81f; -->
