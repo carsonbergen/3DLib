@@ -18,10 +18,9 @@ Godot resource for player settings.
 - Jump distance: how far the player will jump forward.
 - Walk speed: how fast the player walks by default.
 - Sprint speed: how fast the player sprints by default.
+- ADS walk speed: how fast the player moves when ADSed.
 
 <!-- [Export]
-[Export]
-public float sprintSpeed = 10f;
 [Export]
 public float adsWalkSpeed = 2.5f;
 [Export]
