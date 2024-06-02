@@ -20,12 +20,9 @@ Godot resource for player settings.
 - Sprint speed: how fast the player sprints by default.
 - ADS walk speed: how fast the player moves when ADSed.
 - Crouch speed: how fast the player moves when crouched.
+- Jump velocity: how high the player jumps.
 
 <!-- [Export]
-[Export]
-public float crouchSpeed = 3f;
-[Export]
-public float jumpVelocity = 3f;
 [Export]
 public float speedChangeFactor = 10f;
 [Export]
