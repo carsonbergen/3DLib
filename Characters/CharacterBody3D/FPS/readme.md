@@ -23,11 +23,4 @@ Godot resource for player settings.
 - Jump velocity: how high the player jumps.
 - Speed change factor: for fast the speed of the player updates.
 - In air movement factor: how fluidly the player can move while in the air.
-
-<!-- [Export]
-[Export]
-public float speedChangeFactor = 10f;
-[Export]
-public float inAirMovementFactor = 0.5f;
-[Export]
-public float gravity = 9.81f; -->
+- Gravity: the amount of gravity applied to the player.
