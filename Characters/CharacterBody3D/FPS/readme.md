@@ -21,6 +21,7 @@ Godot resource for player settings.
 - ADS walk speed: how fast the player moves when ADSed.
 - Crouch speed: how fast the player moves when crouched.
 - Jump velocity: how high the player jumps.
+- Speed change factor: for fast the speed of the player updates.
 
 <!-- [Export]
 [Export]
