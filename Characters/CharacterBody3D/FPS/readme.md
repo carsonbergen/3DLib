@@ -22,6 +22,7 @@ Godot resource for player settings.
 - Crouch speed: how fast the player moves when crouched.
 - Jump velocity: how high the player jumps.
 - Speed change factor: for fast the speed of the player updates.
+- In air movement factor: how fluidly the player can move while in the air.
 
 <!-- [Export]
 [Export]
