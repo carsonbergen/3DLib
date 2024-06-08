@@ -15,7 +15,7 @@ Godot resource for player settings.
 - `lookSensitivity`: how fast the camera moves when not ADSed.
 - `adsSensitivity`: how fast the camera moves when ADSed.
 - `fov`: saved FOV setup for the player.
-- Jump distance: how far the player will jump forward.
+- `jumpDistance`: how far the player will jump forward.
 - Walk speed: how fast the player walks by default.
 - Sprint speed: how fast the player sprints by default.
 - ADS walk speed: how fast the player moves when ADSed.
