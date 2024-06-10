@@ -17,7 +17,7 @@ Godot resource for player settings.
 - `fov`: saved FOV setup for the player.
 - `jumpDistance`: how far the player will jump forward.
 - `walkSpeed`: how fast the player walks by default.
-- Sprint speed: how fast the player sprints by default.
+- `sprintSpeed`: how fast the player sprints by default.
 - ADS walk speed: how fast the player moves when ADSed.
 - Crouch speed: how fast the player moves when crouched.
 - Jump velocity: how high the player jumps.
