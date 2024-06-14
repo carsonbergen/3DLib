@@ -21,6 +21,6 @@ Godot resource for player settings.
 - `adsWalkSpeed`: how fast the player moves when ADSed.
 - `crouchSpeed`: how fast the player moves when crouched.
 - `jumpVelocity`: how high the player jumps.
-- Speed change factor: for fast the speed of the player updates.
+- `speedChangeFactor`: for fast the speed of the player updates.
 - In air movement factor: how fluidly the player can move while in the air.
 - Gravity: the amount of gravity applied to the player.
