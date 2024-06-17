@@ -11,7 +11,7 @@ This is the first in the chain of crucial FPS components. It modifies the arm mo
 This is the last in the chain of crucial FPS components. It handles all weapon related logic.
 
 ## PlayerSettings
-Godot resource for player settings.
+Godot resource for player settings. These are designed to be defaults that will later be replaced by the player's config file.
 - `lookSensitivity`: how fast the camera moves when not ADSed.
 - `adsSensitivity`: how fast the camera moves when ADSed.
 - `fov`: saved FOV setup for the player.
