@@ -6,3 +6,9 @@ Contains the logical for damaging enemies, including:
 
 ## Scope
 Draws a scope reticle on the screen.
+
+## Weapon
+Contains all logic for weapons, including:
+- weapon attributes,
+- armature targets,
+- modifying the crosshair,
