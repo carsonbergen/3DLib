@@ -102,6 +102,8 @@ namespace ThreeDLib
 
         private bool scopedIn = false;
 
+        private Node3D bulletRaycastEndPoint = null;
+
         public override void _Ready()
         {
             if (scopeLayer != null)
@@ -118,6 +120,8 @@ namespace ThreeDLib
             };
             currentAmmoInMagazine = magazineSize;
             totalAmmoLeft = totalAmmo;
+
+            bulletRaycastEndPoint = bulletRaycast.GetChild<Node3D>(0);
         }
 
         public override void _Process(double delta)
@@ -241,22 +245,27 @@ namespace ThreeDLib
 
         public void shoot()
         {
+            bulletRaycastEndPoint.Position = bulletRaycast.TargetPosition with { Z=5 };
+            GD.Print(bulletRaycastEndPoint.Position, bulletRaycast.TargetPosition);
             if (currentTime > fireRate && reloadTween == null)
             {
                 if (currentAmmoInMagazine > 0 || magazineSize == -1)
                 {
+                    bulletRaycast.GetChild<Node3D>(0).Position = bulletRaycast.TargetPosition;
                     var collisionPoint = bulletRaycast.GetCollisionPoint();
                     var spaceState = GetWorld3D().DirectSpaceState;
-                    var fromPoint = bulletRaycast.GlobalPosition;
-                    var toPoint = collisionPoint + (
-                        range / fromPoint.DistanceTo(collisionPoint)
-                    ) * (collisionPoint - fromPoint);
+                    // var fromPoint = bulletRaycast.GlobalPosition;
+                    // var toPoint = collisionPoint + (
+                    //     range / fromPoint.DistanceTo(collisionPoint)
+                    // ) * (collisionPoint - fromPoint);
 
+                    var fromPoint = bulletRaycast.GlobalPosition;
+                    var toPoint = bulletRaycastEndPoint.GlobalPosition;
                     var vertices = new Vector3[]
-{
-                        fromPoint,
+                    {
+                        fromPoint, 
                         toPoint
-};
+                    };
 
                     // Initialize the ArrayMesh.
                     var arrMesh = new ArrayMesh();
@@ -281,7 +290,7 @@ namespace ThreeDLib
                         query.CollideWithBodies = false;
                         Godot.Collections.Dictionary result = spaceState.IntersectRay(query);
                         result.TryGetValue("collider", out Variant collider);
-                        
+
                         if (((Node3D)collider) != null)
                         {
                             if (((Node3D)collider) is Area3D area)
@@ -290,7 +299,7 @@ namespace ThreeDLib
                                 if (parent is FPSEnemy enemy)
                                 {
                                     if (lastCollider == ((Node3D)collider)) break;
-                                    
+
                                     lastCollider = (Node3D)collider;
                                     enemy.applyDamagers(damagers, area, i);
                                 }
