@@ -65,6 +65,7 @@ namespace FPS
                 }
                 else if (Input.IsActionJustPressed("reload_weapon"))
                 {
+                    
                     currentWeapon.reload();
                 }
             }

@@ -325,6 +325,7 @@ namespace ThreeDLib
 
         public void reload()
         {
+            scopedIn = false;
             if (reloadTween == null && currentAmmoInMagazine < magazineSize && totalAmmoLeft > 0)
             {
                 reloadAnimation();
