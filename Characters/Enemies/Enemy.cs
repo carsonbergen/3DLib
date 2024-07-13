@@ -2,7 +2,7 @@ using Godot;
 using System;
 using ThreeDLib;
 
-public partial class Enemy : RigidBody3D
+public partial class Enemy : CharacterBody3D
 {
 	[Export]
 	public float health = 100f;
