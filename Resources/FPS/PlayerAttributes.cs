@@ -1,17 +1,20 @@
 using Godot;
 using System;
+using ThreeDLib;
 
 namespace FPS
 {
     [GlobalClass]
-    public partial class PlayerSettings : Resource
+    public partial class PlayerAttributes : Resource
     {
         [Export]
-        public float lookSensitivity = 0.5f;
+        public float health { get; set; }
+
         [Export]
-        public float adsSensitivity = 0.25f;
+        public float maxHealth { get; set; }
+
         [Export]
-        public int fov = 110;
+        public Weapon[] weapons { get; set; }
 
         [Export]
         public float jumpDistance = 1f;

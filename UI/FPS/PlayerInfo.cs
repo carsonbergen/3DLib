@@ -6,6 +6,9 @@ namespace FPS
 	public partial class PlayerInfo : Container
 	{
 		[Export]
+		public FPSCharacterBody3D player;
+
+		[Export]
 		public FPSWeaponHolder weaponHolder;
 		[Export]
 		public Label ammoInMagazineLabel;
@@ -16,6 +19,9 @@ namespace FPS
 
 		[Export]
 		public Label reloadWarning;
+
+		[Export]
+		public Label healthLabel;
 
 		public override void _Process(double delta)
 		{
@@ -35,6 +41,8 @@ namespace FPS
 			{
 				reloadWarning.Visible = false;
 			}
+
+			healthLabel.Text = player.playerAttributes.health.ToString();
 		}
 	}
 }

@@ -10,6 +10,9 @@ namespace ThreeDLib
 		[Export]
 		public PlayerSettings playerSettings;
 
+		[Export]
+		public PlayerAttributes playerAttributes;
+
 		// Holds the camera
 		[Export]
 		public FPSUpperBody upperBody = null;
@@ -104,13 +107,13 @@ namespace ThreeDLib
 			}
 
 			if (currentState == State.Walking)
-				speed = Mathf.Lerp(speed, playerSettings.walkSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerAttributes.walkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Sprinting)
-				speed = Mathf.Lerp(speed, playerSettings.sprintSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerAttributes.sprintSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.ADSing)
-				speed = Mathf.Lerp(speed, playerSettings.adsWalkSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerAttributes.adsWalkSpeed, (float)delta * speedChangeFactor);
 			else if (currentState == State.Crouching)
-				speed = Mathf.Lerp(speed, playerSettings.crouchSpeed, (float)delta * speedChangeFactor);
+				speed = Mathf.Lerp(speed, playerAttributes.crouchSpeed, (float)delta * speedChangeFactor);
 
 			Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward") * movementFactor;
 
@@ -128,8 +131,8 @@ namespace ThreeDLib
 
 			if (jumpDirection != Vector3.Zero)
 			{
-				velocity.X = (jumpDirection.X * speed * playerSettings.jumpDistance / 2) + (direction.X * speed * playerSettings.inAirMovementFactor);
-				velocity.Z = (jumpDirection.Z * speed * playerSettings.jumpDistance / 2) + (direction.Z * speed * playerSettings.inAirMovementFactor);
+				velocity.X = (jumpDirection.X * speed * playerAttributes.jumpDistance / 2) + (direction.X * speed * playerAttributes.inAirMovementFactor);
+				velocity.Z = (jumpDirection.Z * speed * playerAttributes.jumpDistance / 2) + (direction.Z * speed * playerAttributes.inAirMovementFactor);
 			}
 			else if (direction != Vector3.Zero)
 			{
