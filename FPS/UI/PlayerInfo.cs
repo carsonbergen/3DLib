@@ -21,7 +21,8 @@ namespace FPS
 		public Label reloadWarning;
 
 		[Export]
-		public Label healthLabel;
+		public Label healthValueLabel;
+
 
 		public override void _Process(double delta)
 		{
@@ -31,7 +32,7 @@ namespace FPS
 			ammoInMagazineLabel.Text = currentAmmo.ToString();
 			ammoLeftLabel.Text = currentAmmoLeft.ToString();
 			weaponLabel.Text = weaponHolder.currentWeapon.name;
-			
+
 			// Reload message
 			if (currentAmmo == 0)
 			{
@@ -42,7 +43,7 @@ namespace FPS
 				reloadWarning.Visible = false;
 			}
 
-			healthLabel.Text = player.playerAttributes.health.ToString();
+			healthValueLabel.Text = player.playerAttributes.health.ToString();
 		}
 	}
 }
