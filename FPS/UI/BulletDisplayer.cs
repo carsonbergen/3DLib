@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FPS
 {
@@ -9,23 +11,52 @@ namespace FPS
 		[Export]
 		public FPSWeaponHolder weaponHolder;
 
-		public override void _Process(double delta)
+		private Thread textSettingThread;
+		private string currentText = "";
+		private bool continueThread = true;
+		private int currentAmmo = 0;
+
+		public override void _Ready()
 		{
-			int currentAmmo = weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
-			if (currentAmmo >= 0) Text = repeat("|", currentAmmo);
-			else Text = "∞";
+			StartATask();
 		}
 
-		public static string repeat(string text, int n)
+		public override void _Process(double delta)
 		{
-			var textAsSpan = text.AsSpan();
-			var span = new Span<char>(new char[textAsSpan.Length * (int)n]);
-			for (var i = 0; i < n; i++)
-			{
-				textAsSpan.CopyTo(span.Slice((int)i * textAsSpan.Length, textAsSpan.Length));
-			}
+			currentAmmo = (int)weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
+			Text = currentText;
+		}
 
-			return span.ToString();
+		public async void StartATask()
+		{
+			await Task.Run(
+				async () =>
+				{
+					while (continueThread)
+					{
+						currentText = await Repeat("|", this.currentAmmo);
+					}
+				}
+			);
+		}
+		
+		public static async Task<string> Repeat(string text, int n)
+		{
+			string ret = await Task.Run(
+				() =>
+				{
+					if (n < 0) return "∞";
+					var textAsSpan = text.AsSpan();
+					var span = new Span<char>(new char[textAsSpan.Length * (int)n]);
+					for (var i = 0; i < n; i++)
+					{
+						textAsSpan.CopyTo(span.Slice((int)i * textAsSpan.Length, textAsSpan.Length));
+					}
+
+					return span.ToString();
+				}
+			);
+			return ret;
 		}
 	}
 }

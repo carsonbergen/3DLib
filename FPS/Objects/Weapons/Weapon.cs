@@ -268,18 +268,18 @@ namespace ThreeDLib
                     };
 
                     // Initialize the ArrayMesh.
-                    var arrMesh = new ArrayMesh();
-                    var arrays = new Godot.Collections.Array();
-                    arrays.Resize((int)Mesh.ArrayType.Max);
-                    arrays[(int)Mesh.ArrayType.Vertex] = vertices;
+                    // var arrMesh = new ArrayMesh();
+                    // var arrays = new Godot.Collections.Array();
+                    // arrays.Resize((int)Mesh.ArrayType.Max);
+                    // arrays[(int)Mesh.ArrayType.Vertex] = vertices;
 
                     // Create the Mesh.
-                    arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Lines, arrays);
-                    var mesh = new MeshInstance3D
-                    {
-                        Mesh = arrMesh
-                    };
-                    GetTree().Root.AddChild(mesh);
+                    // arrMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Lines, arrays);
+                    // var mesh = new MeshInstance3D
+                    // {
+                    //     Mesh = arrMesh
+                    // };
+                    // GetTree().Root.AddChild(mesh);
 
                     Node3D lastCollider = null;
 

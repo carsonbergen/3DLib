@@ -32,7 +32,7 @@ namespace FPS
 			);
 			// Ammo counter logic
 			// ammoInMagazineLabel.Text = currentAmmo.ToString();
-			ammoLeftLabel.Text = currentAmmoLeft.ToString();
+			ammoLeftLabel.Text = currentAmmoLeft >= 0 ? currentAmmoLeft.ToString() : "";
 			weaponLabel.Text = weaponHolder.currentWeapon.name;
 
 			// Reload message
