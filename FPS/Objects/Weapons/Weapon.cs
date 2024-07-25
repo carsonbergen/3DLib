@@ -392,5 +392,9 @@ namespace ThreeDLib
         {
             return totalAmmoLeft;
         }
+
+        public int getMagazineSize() {
+            return magazineSize;
+        }
     }
 }

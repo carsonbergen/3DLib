@@ -12,7 +12,7 @@ namespace FPS
 		public override void _Process(double delta)
 		{
 			int currentAmmo = weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
-			if (currentAmmo > 0) Text = repeat("|", currentAmmo);
+			if (currentAmmo >= 0) Text = repeat("|", currentAmmo);
 			else Text = "∞";
 		}
 

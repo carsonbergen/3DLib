@@ -27,9 +27,11 @@ namespace FPS
 		public override void _Process(double delta)
 		{
 			int currentAmmo = weaponHolder.currentWeapon.getCurrentAmmoInMagazine();
-			int currentAmmoLeft = weaponHolder.currentWeapon.getTotalAmmoLeft();
+			int currentAmmoLeft = weaponHolder.currentWeapon.getTotalAmmoLeft() - (
+				weaponHolder.currentWeapon.getMagazineSize() - currentAmmo
+			);
 			// Ammo counter logic
-			ammoInMagazineLabel.Text = currentAmmo.ToString();
+			// ammoInMagazineLabel.Text = currentAmmo.ToString();
 			ammoLeftLabel.Text = currentAmmoLeft.ToString();
 			weaponLabel.Text = weaponHolder.currentWeapon.name;
 
