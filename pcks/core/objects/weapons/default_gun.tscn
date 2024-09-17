@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://ymogikqsk42y"]
+
+[ext_resource type="Script" path="res://src/3dlib/fps/objects/weapons/Weapon.cs" id="1_2b562"]
+[ext_resource type="Script" path="res://src/3dlib/fps/objects/weapons/FPSDamager.cs" id="2_ub824"]
+
+[sub_resource type="Resource" id="Resource_h8jyu"]
+script = ExtResource("2_ub824")
+criticalAreaBonus = 1.05
+passThroughDamageReduction = 0.05
+damage = 0.0
+
+[node name="DefaultGun" type="Node3D" node_paths=PackedStringArray("leftArmTarget", "rightArmTarget", "pivot")]
+script = ExtResource("1_2b562")
+leftArmTarget = NodePath("Pivot/LeftArmTarget")
+rightArmTarget = NodePath("Pivot/RightArmTarget")
+weight = 50.0
+name = "Finger Gun"
+automatic = true
+magazineSize = -1
+totalAmmo = -1
+adsAccuracy = 0.0
+hipFireAccuracy = 0.0
+damagers = Array[Object]([SubResource("Resource_h8jyu")])
+maxZ = 0.1
+maxXRotation = 15.0
+pivot = NodePath("Pivot")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="LeftArmTarget" type="Marker3D" parent="Pivot"]
+transform = Transform3D(0.999927, -0.0121188, 0.00180315, 0, 0.147171, 0.989111, -0.0122521, -0.989038, 0.14716, -0.0735662, -0.072, 0.163178)
+
+[node name="RightArmTarget" type="Marker3D" parent="Pivot"]
+transform = Transform3D(0.956687, -0.280376, 0.0783565, 0, 0.269155, 0.963097, -0.29112, -0.921382, 0.257497, 0.0154141, -0.099, 0.174806)

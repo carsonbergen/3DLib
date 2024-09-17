@@ -1,0 +1,1 @@
+Contains all resources for the player camera.

@@ -63,6 +63,7 @@ namespace ThreeDLib
             }
             // Gets the root node3d of the current scene (not the actual root)
             parent = GetNode<Node3D>("../");
+            GD.Print("Player setup");
         }
 
         /**

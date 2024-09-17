@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://nel0gb2fh436"]
+
+[ext_resource type="FontFile" uid="uid://bp18doadvo35b" path="res://src/3dlib/pcks/core/assets/fonts/Wittgenstein/static/Wittgenstein-Medium.ttf" id="1_6d75g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0udno"]
+border_width_left = 2
+border_width_top = 2
+border_color = Color(0.733333, 0.733333, 0.733333, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.466667, 0.466667, 0.466667, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_6d75g")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_0udno")
+text = "hello world"

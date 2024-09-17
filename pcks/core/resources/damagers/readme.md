@@ -1,0 +1,1 @@
+Resources for the various weapons in El Supermercado.

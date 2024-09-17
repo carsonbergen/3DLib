@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dqp1khucoyqso"]
+
+[ext_resource type="FontVariation" uid="uid://bqws3yw6mb1bo" path="res://src/3dlib/pcks/core/theme/player_hud_font.tres" id="1_jct14"]
+
+[resource]
+default_font = ExtResource("1_jct14")
+Label/colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
+Label/colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 5
+Label/constants/shadow_outline_size = 5
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("1_jct14")
+RichTextLabel/colors/default_color = Color(0.866667, 0.866667, 0.866667, 1)
+RichTextLabel/colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/outline_size = 5
+RichTextLabel/constants/shadow_outline_size = 5
+RichTextLabel/font_sizes/normal_font_size = 22

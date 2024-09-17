@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="PlayerAttributes" load_steps=2 format=3 uid="uid://dgh6b3qwfcbfa"]
+
+[ext_resource type="Script" path="res://src/3dlib/fps/resources/PlayerAttributes.cs" id="1_k0cuj"]
+
+[resource]
+script = ExtResource("1_k0cuj")
+health = 0.0
+maxHealth = 0.0
+weapons = null
+jumpDistance = 1.0
+walkSpeed = 5.0
+sprintSpeed = 10.0
+adsWalkSpeed = 2.5
+crouchSpeed = 3.0
+jumpVelocity = 3.0
+speedChangeFactor = 10.0
+inAirMovementFactor = 0.5
+gravity = 9.81

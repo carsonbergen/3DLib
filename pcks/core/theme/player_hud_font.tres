@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bqws3yw6mb1bo"]
+
+[ext_resource type="FontFile" uid="uid://bp18doadvo35b" path="res://src/3dlib/pcks/core/assets/fonts/Wittgenstein/static/Wittgenstein-Medium.ttf" id="1_hgu44"]
+
+[resource]
+base_font = ExtResource("1_hgu44")

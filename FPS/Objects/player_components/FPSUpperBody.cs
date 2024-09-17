@@ -50,7 +50,7 @@ namespace FPS
 
         public override void _PhysicsProcess(double delta)
         {
-            if (Input.IsActionPressed("crouch"))
+            if (Input.IsActionPressed("move_crouch"))
             {
                 crouching = true;
                 Position = Position with

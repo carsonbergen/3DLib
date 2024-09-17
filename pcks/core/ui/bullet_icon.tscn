@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://beyvf00j4qvp2"]
+
+[node name="BulletIcon" type="ColorRect"]
+custom_minimum_size = Vector2(2, 10)

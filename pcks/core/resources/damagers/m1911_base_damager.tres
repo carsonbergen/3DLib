@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FPSDamager" load_steps=2 format=3 uid="uid://dgmoi2r4kgdir"]
+
+[ext_resource type="Script" path="res://src/libs/3DLib/FPS/Objects/Weapons/FPSDamager.cs" id="1_s5dg7"]
+
+
+[resource]
+script = ExtResource("1_s5dg7")
+criticalAreaBonus = 1.1
+damage = 15.0

@@ -153,12 +153,12 @@ namespace ThreeDLib
                 }
                 else
                 {
-                    if (Input.IsActionPressed("ads"))
+                    if (Input.IsActionPressed("combat_ads"))
                     {
                         scopedIn = true;
                         ads(scopedIn);
                     }
-                    else if (Input.IsActionJustReleased("ads"))
+                    else if (Input.IsActionJustReleased("combat_ads"))
                     {
                         scopedIn = false;
                         ads(scopedIn);

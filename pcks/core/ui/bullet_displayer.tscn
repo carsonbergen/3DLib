@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh2ls23c2tnrc"]
+
+[ext_resource type="Script" path="res://src/libs/3DLib/FPS/UI/BulletDisplayer.cs" id="1_llum0"]
+[ext_resource type="PackedScene" uid="uid://beyvf00j4qvp2" path="res://src/3dlib/pcks/core/ui/bullet_icon.tscn" id="2_sjgdf"]
+
+[node name="BulletDisplayer" type="HBoxContainer" node_paths=PackedStringArray("weaponHolder")]
+layout_direction = 3
+script = ExtResource("1_llum0")
+bulletIcon = ExtResource("2_sjgdf")
+weaponHolder = NodePath("")

@@ -29,6 +29,7 @@ namespace ThreeDLib
 			mouseSensitivity = playerSettings.lookSensitivity;
 			Setup();
 			Input.MouseMode = Input.MouseModeEnum.Captured;
+			GD.Print("Player is ready");
 		}
 
 		public override void _PhysicsProcess(double delta)

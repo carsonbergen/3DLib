@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlayerSettings" load_steps=2 format=3 uid="uid://s0o5r3suo056"]
+
+[ext_resource type="Script" path="res://src/3dlib/fps/resources/PlayerSettings.cs" id="1_kv8b6"]
+
+[resource]
+script = ExtResource("1_kv8b6")
+lookSensitivity = 0.5
+adsSensitivity = 0.25
+fov = 110
